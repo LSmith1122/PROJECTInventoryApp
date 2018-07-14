@@ -12,4 +12,8 @@
     <string name="editor_label_add_description">Add Product to Inventory</string>
     <string name="hint_save_product_button">Add Product</string>
     <string name="hint_cancel_product_button">Cancel</string>
+    <string name="display_text_empty">There are no products in inventory.</string>
+    <string name="current_inventory_size">Current Inventory Size: </string>
+    <string name="table_details">Table Details:</string>
+    <string name="unknown_entry">Unknown</string>
 </resources>

@@ -14,10 +14,11 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
         String CREATE_PRODUCT_TABLE = "CREATE TABLE " + BookEntry.TABLE_NAME + "("
                 + BookEntry.PRODUCT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + BookEntry.PRODUCT_NAME + " TEXT NOT NULL,"
-                + BookEntry.PRICE + " INTEGER NOT NULL,"
+                + BookEntry.PRICE + " DECIMAL NOT NULL,"
                 + BookEntry.QUANTITY + " INTEGER NOT NULL,"
                 + BookEntry.SUPPLIER_NAME + " TEXT,"
-                + BookEntry.SUPPLIER_PHONE_NUMBER + " TEXT" + ");";
+                + BookEntry.SUPPLIER_PHONE_NUMBER + " TEXT"
+                + ");";
         db.execSQL(CREATE_PRODUCT_TABLE);
     }
     @Override

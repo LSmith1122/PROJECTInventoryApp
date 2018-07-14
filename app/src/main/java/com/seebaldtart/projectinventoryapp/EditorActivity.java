@@ -1,13 +1,12 @@
 package com.seebaldtart.projectinventoryapp;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import com.seebaldtart.projectinventoryapp.data.BookContract.BookEntry;
 import com.seebaldtart.projectinventoryapp.data.InventoryDBHelper;
 public class EditorActivity extends AppCompatActivity {
@@ -35,9 +34,12 @@ public class EditorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (updateDatabase() != invalid) {      // Valid entry
-
+                    // TODO: Return to Parent Activity and show Toast message
+                    Toast.makeText(EditorActivity.this, "New Product Added: " + productNameEditText.getText().toString(), Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {        // Invalid entry
-
+                    // TODO: Show Toast message
+                    Toast.makeText(EditorActivity.this, "Invalid Entry", Toast.LENGTH_SHORT).show();
                 }
             }
         });
