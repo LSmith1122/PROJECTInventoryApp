@@ -15,9 +15,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditorActivity"
-            android:label="@string/editor_label_add">
+            android:label="@string/editor_label_add"
+            android:parentActivityName=".MainActivity">
             <meta-data
-                android:name="com.android.app.PARENT_ACTIVITY"
+                android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
     </application>

@@ -16,7 +16,8 @@
     <EditText
         android:id="@+id/product_name_edit_text"
         style="@style/basic_edit_text"
-        android:hint="@string/hint_product_name"/>
+        android:hint="@string/hint_product_name"
+        android:inputType="text"/>
     <EditText
         android:id="@+id/product_price_edit_text"
         style="@style/basic_edit_text"
@@ -30,9 +31,24 @@
     <EditText
         android:id="@+id/supplier_name_edit_text"
         style="@style/basic_edit_text"
-        android:hint="@string/hint_supplier_name"/>
+        android:hint="@string/hint_supplier_name"
+        android:inputType="text"/>
     <EditText
         android:id="@+id/supplier_phone_number_edit_text"
         style="@style/basic_edit_text"
-        android:hint="@string/hint_supplier_phone_number"/>
+        android:hint="@string/hint_supplier_phone_number"
+        android:inputType="phone"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/cancel_button"
+            style="@style/editor_action_buttons"
+            android:hint="@string/hint_cancel_product_button"/>
+        <Button
+            android:id="@+id/save_product_button"
+            style="@style/editor_action_buttons"
+            android:hint="@string/hint_save_product_button"/>
+    </LinearLayout>
 </LinearLayout>

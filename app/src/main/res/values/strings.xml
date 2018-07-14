@@ -10,4 +10,6 @@
     <string name="hint_supplier_name">Supplier</string>
     <string name="hint_supplier_phone_number">Supplier\'s Phone Number</string>
     <string name="editor_label_add_description">Add Product to Inventory</string>
+    <string name="hint_save_product_button">Add Product</string>
+    <string name="hint_cancel_product_button">Cancel</string>
 </resources>
