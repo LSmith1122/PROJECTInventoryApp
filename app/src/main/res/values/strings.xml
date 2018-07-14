@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PROJECTInventoryApp</string>
+    <string name="main_activity_label">Inventory</string>
+    <string name="editor_label_add">Add Product</string>
+    <string name="editor_label_update">Update Product</string>
+    <string name="editor_label_delete">Delete Product</string>
+    <string name="hint_product_name">Product Name</string>
+    <string name="hint_product_price">Price</string>
+    <string name="hint_product_quantity">Quantity</string>
+    <string name="hint_supplier_name">Supplier</string>
+    <string name="hint_supplier_phone_number">Supplier\'s Phone Number</string>
+    <string name="editor_label_add_description">Add Product to Inventory</string>
+</resources>
