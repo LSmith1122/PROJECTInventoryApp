@@ -28,10 +28,6 @@ public class EditorActivity extends AppCompatActivity {
     private FloatingActionButton saveButton;
     private FloatingActionButton cancelButton;
     private InventoryDBHelper DBHelper;
-//    private final String add = "action_add";
-//    private final String edit = "action_edit";
-//    private final String remove = "action_remove";
-//    private final String deleteAll = "action_delete_all";
     private String layoutStatus = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {

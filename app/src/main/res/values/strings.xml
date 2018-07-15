@@ -11,7 +11,7 @@
     <string name="hint_supplier_name">Supplier</string>
     <string name="hint_supplier_phone_number">Supplier\'s Phone Number</string>
     <string name="editor_label_add_description">Add Product to Inventory.</string>
-    <string name="editor_label_edit_description" translatable="true">Edit Product in Inventory by selecting Product by Product ID, then insert new data below.</string>
+    <string name="editor_label_edit_description" translatable="true">Edit Product in Inventory by selecting Product by Product ID. Insert new data below.</string>
     <string name="editor_label_remove_description" translatable="true">Remove Product in Inventory.\nSelect the product to delete from Inventory by its Product ID.</string>
     <string name="editor_label_delete_description" translatable="true">Are you sure you want to delete all product entries?</string>
     <string name="hint_save_product_button">Add Product</string>
