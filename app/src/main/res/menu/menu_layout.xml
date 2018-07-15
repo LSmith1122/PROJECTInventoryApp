@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_add_product"
+        android:title="@string/menu_add_product"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_edit_product"
+        android:title="@string/menu_edit_product"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_remove_product"
+        android:title="@string/menu_remove_product"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_delete_all_products"
+        android:title="@string/menu_delete_all_products"
+        app:showAsAction="never"/>
+</menu>

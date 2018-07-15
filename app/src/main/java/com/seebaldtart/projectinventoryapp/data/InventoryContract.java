@@ -9,4 +9,10 @@ public class InventoryContract {
         public static String SUPPLIER_NAME = "supplier_name";
         public static String SUPPLIER_PHONE_NUMBER = "supplier_phone_number";
     }
+    public static class Tools {
+        public final static String add = "action_add";
+        public final static String edit = "action_edit";
+        public final static String remove = "action_remove";
+        public final static String deleteAll = "action_delete_all";
+    }
 }

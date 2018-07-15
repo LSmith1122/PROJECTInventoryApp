@@ -5,4 +5,5 @@
     <dimen name="basic_edit_text_width">250dp</dimen>
     <dimen name="normal_text_size">16sp</dimen>
     <dimen name="button_text_size">18sp</dimen>
+    <dimen name="required_field_asterisk_minSize">25dp</dimen>
 </resources>

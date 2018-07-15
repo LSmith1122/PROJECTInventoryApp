@@ -4,18 +4,33 @@
     <string name="editor_label_add">Add Product</string>
     <string name="editor_label_update">Update Product</string>
     <string name="editor_label_delete">Delete Product</string>
+    <string name="hint_product_id">Product ID</string>
     <string name="hint_product_name">Product Name</string>
     <string name="hint_product_price">Price</string>
     <string name="hint_product_quantity">Quantity</string>
     <string name="hint_supplier_name">Supplier</string>
     <string name="hint_supplier_phone_number">Supplier\'s Phone Number</string>
-    <string name="editor_label_add_description">Add Product to Inventory</string>
+    <string name="editor_label_add_description">Add Product to Inventory.</string>
+    <string name="editor_label_edit_description" translatable="true">Edit Product in Inventory by selecting Product by Product ID, then insert new data below.</string>
+    <string name="editor_label_remove_description" translatable="true">Remove Product in Inventory.\nSelect the product to delete from Inventory by its Product ID.</string>
+    <string name="editor_label_delete_description" translatable="true">Are you sure you want to delete all product entries?</string>
     <string name="hint_save_product_button">Add Product</string>
+    <string name="menu_add_product">Add Product</string>
+    <string name="menu_edit_product">Edit Product</string>
+    <string name="menu_remove_product">Remove Product</string>
+    <string name="menu_delete_all_products">Delete All Products</string>
     <string name="hint_cancel_product_button">Cancel</string>
     <string name="display_text_empty">There are no products in the inventory.</string>
     <string name="current_inventory_size">Current Inventory Size:</string>
     <string name="table_details">Table Details:</string>
-    <string name="unknown_entry">Unknown</string>
+    <string name="unknown_entry">[unknown]</string>
     <string name="id_string">ID:</string>
     <string name="allowed_characters_for_text">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890.:!,-</string>
+    <string name="invalid_entry">Invalid Entry.</string>
+    <string name="required_field_asterisk">*</string>
+    <string name="editor_bundle">editor_bundle</string>
+    <string name="action_add">action_add</string>
+    <string name="action_edit">action_edit</string>
+    <string name="action_remove">action_remove</string>
+    <string name="action_delete_all">action_delete_all</string>
 </resources>

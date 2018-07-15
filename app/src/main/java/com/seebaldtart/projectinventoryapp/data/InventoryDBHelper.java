@@ -4,8 +4,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
 public class InventoryDBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "inventory.db";
-    private static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "inventory.db";
+    public static final int DATABASE_VERSION = 1;
     public InventoryDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
