@@ -1,5 +1,5 @@
 package com.seebaldtart.projectinventoryapp.data;
-public class BookContract {
+public class InventoryContract {
     public static class BookEntry {
         public static String TABLE_NAME = "books";
         public static String PRODUCT_ID = "_id";

@@ -6,14 +6,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="basic_edit_text">
-        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_width">@dimen/basic_edit_text_width</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
     </style>
     <style name="editor_action_buttons">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_margin">8dp</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">@dimen/common_distance_short</item>
+        <item name="android:layout_margin">@dimen/common_distance_short</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+    </style>
+    <style name="basic_fab">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_margin">@dimen/common_distance_large</item>
     </style>
 </resources>

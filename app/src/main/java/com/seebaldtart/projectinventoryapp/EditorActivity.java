@@ -1,13 +1,13 @@
 package com.seebaldtart.projectinventoryapp;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.seebaldtart.projectinventoryapp.data.BookContract.BookEntry;
+import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
 import com.seebaldtart.projectinventoryapp.data.InventoryDBHelper;
 public class EditorActivity extends AppCompatActivity {
     private final long invalid = -1;
@@ -16,8 +16,8 @@ public class EditorActivity extends AppCompatActivity {
     private EditText productQuantityEditText;
     private EditText supplierNameEditText;
     private EditText supplierPhoneNumberEditText;
-    private Button saveButton;
-    private Button cancelButton;
+    private FloatingActionButton saveButton;
+    private FloatingActionButton cancelButton;
     private InventoryDBHelper DBHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +34,9 @@ public class EditorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (updateDatabase() != invalid) {      // Valid entry
-                    // TODO: Return to Parent Activity and show Toast message
                     Toast.makeText(EditorActivity.this, "New Product Added: " + productNameEditText.getText().toString(), Toast.LENGTH_SHORT).show();
                     finish();
                 } else {        // Invalid entry
-                    // TODO: Show Toast message
                     Toast.makeText(EditorActivity.this, "Invalid Entry", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -54,11 +52,11 @@ public class EditorActivity extends AppCompatActivity {
     private long updateDatabase() {
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        String productName = productNameEditText.getText().toString();
-        Double productPrice = Double.valueOf(productPriceEditText.getText().toString());
-        int productQuantity = Integer.valueOf(productQuantityEditText.getText().toString());
-        String supplierName = supplierNameEditText.getText().toString();
-        String supplierPhoneNumber = supplierPhoneNumberEditText.getText().toString();
+        String productName = productNameEditText.getText().toString().trim();
+        Double productPrice = Double.valueOf(productPriceEditText.getText().toString().trim());
+        int productQuantity = Integer.valueOf(productQuantityEditText.getText().toString().trim());
+        String supplierName = supplierNameEditText.getText().toString().trim();
+        String supplierPhoneNumber = supplierPhoneNumberEditText.getText().toString().trim();
         contentValues.put(BookEntry.PRODUCT_NAME, productName);
         contentValues.put(BookEntry.PRICE, productPrice);
         contentValues.put(BookEntry.QUANTITY, productQuantity);
