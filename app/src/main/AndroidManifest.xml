@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".CatalogActivity"
             android:label="@string/main_activity_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,10 +19,14 @@
         </activity>
         <activity android:name=".EditorActivity"
             android:label="@string/editor_label_add"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".CatalogActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".CatalogActivity"/>
         </activity>
+        <provider
+            android:authorities="com.seebaldtart.projectinventoryapp"
+            android:name=".data.ProductProvider"
+            android:exported="false"/>
     </application>
 </manifest>

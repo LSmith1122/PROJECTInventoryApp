@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.seebaldtart.projectinventoryapp.data.InventoryContract.Tools;
 import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
-import com.seebaldtart.projectinventoryapp.data.InventoryDBHelper;
+import com.seebaldtart.projectinventoryapp.data.ProductDBHelper;
 public class EditorActivity extends AppCompatActivity {
     private final long invalid = -1;
     private TextView descriptionText;
@@ -27,13 +27,13 @@ public class EditorActivity extends AppCompatActivity {
     private EditText supplierPhoneNumberEditText;
     private FloatingActionButton saveButton;
     private FloatingActionButton cancelButton;
-    private InventoryDBHelper DBHelper;
+    private ProductDBHelper DBHelper;
     private String layoutStatus = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-        DBHelper = new InventoryDBHelper(this);
+        DBHelper = new ProductDBHelper(this);
         Bundle bundle = getIntent().getExtras();
         determineBundle(bundle);
     }
@@ -143,11 +143,11 @@ public class EditorActivity extends AppCompatActivity {
                 int productQuantity = Integer.valueOf(productQuantityEditText.getText().toString().trim());
                 String supplierName = checkValues(supplierNameEditText.getText().toString().trim());
                 String supplierPhoneNumber = checkValues(supplierPhoneNumberEditText.getText().toString().trim());
-                contentValues.put(BookEntry.PRODUCT_NAME, productName);
-                contentValues.put(BookEntry.PRICE, productPrice);
-                contentValues.put(BookEntry.QUANTITY, productQuantity);
-                contentValues.put(BookEntry.SUPPLIER_NAME, supplierName);
-                contentValues.put(BookEntry.SUPPLIER_PHONE_NUMBER, supplierPhoneNumber);
+                contentValues.put(BookEntry.COLUMN_PRODUCT_NAME, productName);
+                contentValues.put(BookEntry.COLUMN_PRODUCT_PRICE, productPrice);
+                contentValues.put(BookEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
+                contentValues.put(BookEntry.COLUMN_SUPPLIER_NAME, supplierName);
+                contentValues.put(BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER, supplierPhoneNumber);
                 switch (layoutStatus) {
                     case Tools.add:
                         newRowID = db.insert(BookEntry.TABLE_NAME, null, contentValues);
@@ -155,7 +155,7 @@ public class EditorActivity extends AppCompatActivity {
                     case Tools.edit:
                         if (!TextUtils.isEmpty(productID.getText().toString())) {
                             int ID = Integer.valueOf(productID.getText().toString());
-                            String whereClause = BookEntry.PRODUCT_ID + " == " + ID;
+                            String whereClause = BookEntry.COLUMN_PRODUCT_ID + " == " + ID;
                             newRowID = db.update(BookEntry.TABLE_NAME, contentValues, whereClause, null);
                         }
                         break;
@@ -168,7 +168,7 @@ public class EditorActivity extends AppCompatActivity {
                 case Tools.remove:
                     if (!TextUtils.isEmpty(productID.getText().toString())) {
                         int ID = Integer.valueOf(productID.getText().toString());
-                        String whereClause = BookEntry.PRODUCT_ID + " == " + ID;
+                        String whereClause = BookEntry.COLUMN_PRODUCT_ID + " == " + ID;
                         newRowID = db.delete(BookEntry.TABLE_NAME, whereClause, null);
                     }
                     break;
