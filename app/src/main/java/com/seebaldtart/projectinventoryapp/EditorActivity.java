@@ -102,12 +102,12 @@ public class EditorActivity extends AppCompatActivity {
         switch (value) {
         case Tools.add:
             layoutStatus = Tools.add;     // To determine behavior of FAB
-            descriptionText.setText(getString(R.string.editor_label_add_description));
+            descriptionText.setText(getString(R.string.editor_add_description));
             setLayoutVisibilities(View.GONE, View.VISIBLE, R.drawable.baseline_check_white_48);
             break;
         case Tools.edit:
             layoutStatus = Tools.edit;
-            descriptionText.setText(getString(R.string.editor_label_edit_description));
+            descriptionText.setText(getString(R.string.editor_edit_description));
             setLayoutVisibilities(View.VISIBLE, View.VISIBLE, R.drawable.baseline_edit_white_48);
             break;
         case Tools.remove:
@@ -122,7 +122,7 @@ public class EditorActivity extends AppCompatActivity {
             break;
         default:
             layoutStatus = Tools.add;
-            descriptionText.setText(getString(R.string.editor_label_add_description));
+            descriptionText.setText(getString(R.string.editor_add_description));
             setLayoutVisibilities(View.GONE, View.VISIBLE, R.drawable.baseline_check_white_48);
             break;
         }
@@ -146,8 +146,8 @@ public class EditorActivity extends AppCompatActivity {
                 contentValues.put(BookEntry.COLUMN_PRODUCT_NAME, productName);
                 contentValues.put(BookEntry.COLUMN_PRODUCT_PRICE, productPrice);
                 contentValues.put(BookEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
-                contentValues.put(BookEntry.COLUMN_SUPPLIER_NAME, supplierName);
-                contentValues.put(BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER, supplierPhoneNumber);
+                contentValues.put(BookEntry.COLUMN_PRODUCT_SUPPLIER_NAME, supplierName);
+                contentValues.put(BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, supplierPhoneNumber);
                 switch (layoutStatus) {
                     case Tools.add:
                         newRowID = db.insert(BookEntry.TABLE_NAME, null, contentValues);

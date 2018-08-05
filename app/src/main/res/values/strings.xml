@@ -3,11 +3,13 @@
     <string name="main_activity_label">Inventory</string>
     <string name="editor_label_add">Add Product</string>
     <string name="editor_label_update">Update Product</string>
-    <string name="editor_label_delete">Delete Product</string>
     <string name="hint_product_id">Product ID</string>
     <string name="hint_product_name">Product Name</string>
     <string name="hint_product_price">Price</string>
     <string name="hint_product_quantity">Quantity</string>
+    <string name="hint_product_author">Author</string>
+    <string name="hint_product_isbn13">ISBN 13</string>
+    <string name="hint_product_isbn10">ISBN 10</string>
     <string name="hint_supplier_name">Supplier</string>
     <string name="hint_supplier_phone_number">Supplier\'s Phone Number</string>
     <string name="example_text_name">Product Name\nProduct Name</string>
@@ -16,15 +18,14 @@
     <string name="isbn_10">ISBN 10:</string>
     <string name="isbn_13">ISBN 13:</string>
     <string name="quantity_in_stock">left in stock</string>
-    <string name="editor_label_add_description">Add Product to Inventory.</string>
-    <string name="editor_label_edit_description" translatable="true">Edit Product in Inventory by selecting Product by Product ID. Insert new data below.</string>
-    <string name="editor_label_remove_description" translatable="true">Remove Product in Inventory.\nSelect the product to delete from Inventory by its Product ID.</string>
-    <string name="editor_label_delete_description" translatable="true">Are you sure you want to delete all product entries?</string>
+    <string name="editor_add_description">Add Product to Inventory.</string>
+    <string name="editor_edit_description" translatable="true">Insert new data below to edit the selected product\'s data.</string>
     <string name="hint_save_product_button">Add Product</string>
     <string name="menu_add_product">Add Product</string>
     <string name="menu_edit_product">Edit Product</string>
     <string name="menu_remove_product">Remove Product</string>
     <string name="menu_delete_all_products">Delete All Products</string>
+    <string name="menu_delete_product">Delete Product</string>
     <string name="hint_cancel_product_button">Cancel</string>
     <string name="display_text_empty">There are no products in the inventory to display at this time.\n\nAdd products to the database list by tapping "+" Button.</string>
     <string name="current_inventory_size">Current Inventory Size:</string>
@@ -32,6 +33,7 @@
     <string name="unknown_entry">[unknown]</string>
     <string name="id_string">ID:</string>
     <string name="allowed_characters_for_text">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890.:!,-</string>
+    <string name="allowed_characters_for_phone">1234567890.-()</string>
     <string name="invalid_entry">Invalid Entry.</string>
     <string name="required_field_asterisk">*</string>
     <string name="editor_bundle">editor_bundle</string>
@@ -39,4 +41,22 @@
     <string name="action_edit">action_edit</string>
     <string name="action_remove">action_remove</string>
     <string name="action_delete_all">action_delete_all</string>
+    <string name="delete_all_product_dialog">Caution:\n\nAre you sure you want to delete all products in inventory?\nThis cannot be undone.</string>
+    <string name="delete_selected_product_dialog">Caution:\n\nAre you sure you want to delete this product from the inventory?\nThis cannot be undone.</string>
+    <string name="delete_all_products">Delete All Products</string>
+    <string name="delete_selected_product">Delete Product</string>
+    <string name="cancel">Cancel</string>
+    <string name="successful_data_deletion_all">All product data deleted</string>
+    <string name="successful_data_deletion_selected">Product data deleted</string>
+    <string name="successful_data_saved">Product saved</string>
+    <string name="unsuccessful_data_saved">Error saving product</string>
+    <string name="unsuccessful_data_deletion">Error deleting data</string>
+    <string name="error_querying_database">Error querying database</string>
+
+    <string name="illegal_argument_exception_invalid_uri">Illegal URI</string>
+    <string name="illegal_argument_exception_require_name">Product requires a valid name</string>
+    <string name="illegal_argument_exception_require_price">Product requires a valid price</string>
+    <string name="illegal_argument_exception_require_quantity">Product requires a valid quantity</string>
+    <string name="illegal_argument_exception_require_author">Product requires an valid author</string>
+    <string name="illegal_argument_exception_require_isbn">Product requires an valid ISBN#</string>
 </resources>

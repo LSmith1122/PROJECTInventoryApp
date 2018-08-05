@@ -8,6 +8,8 @@
     <dimen name="large_view_margin">16dp</dimen>
     <dimen name="min_size_price">50dp</dimen>
 
+    <dimen name="basic_edit_text_width">250dp</dimen>
+
     <dimen name="max_lines_product_name">2</dimen>
 
     <dimen name="normal_text_size">16sp</dimen>

@@ -16,11 +16,11 @@ public class ProductDBHelper extends SQLiteOpenHelper {
                 + BookEntry.COLUMN_PRODUCT_NAME + " TEXT NOT NULL,"
                 + BookEntry.COLUMN_PRODUCT_PRICE + " DECIMAL NOT NULL,"
                 + BookEntry.COLUMN_PRODUCT_QUANTITY + " INTEGER NOT NULL,"
-                + BookEntry.COLUMN_PRODUCT_ISBN_13 + " TEXT,"
-                + BookEntry.COLUMN_PRODUCT_ISBN_10 + " TEXT,"
+                + BookEntry.COLUMN_PRODUCT_ISBN_13 + " INTEGER,"
+                + BookEntry.COLUMN_PRODUCT_ISBN_10 + " INTEGER,"
                 + BookEntry.COLUMN_PRODUCT_AUTHOR + " TEXT NOT NULL,"
-                + BookEntry.COLUMN_SUPPLIER_NAME + " TEXT,"
-                + BookEntry.COLUMN_SUPPLIER_PHONE_NUMBER + " TEXT"
+                + BookEntry.COLUMN_PRODUCT_SUPPLIER_NAME + " TEXT NOT NULL,"
+                + BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER + " TEXT NOT NULL"
                 + ");";
         db.execSQL(CREATE_PRODUCT_TABLE);
     }

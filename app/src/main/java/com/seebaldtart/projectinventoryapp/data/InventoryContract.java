@@ -18,8 +18,8 @@ public class InventoryContract {
         public static final String COLUMN_PRODUCT_ISBN_10 = "product_isbn_10";
         public static final String COLUMN_PRODUCT_ISBN_13 = "product_isbn_13";
         public static final String COLUMN_PRODUCT_AUTHOR = "product_author";
-        public static final String COLUMN_SUPPLIER_NAME = "product_supplier_name";
-        public static final String COLUMN_SUPPLIER_PHONE_NUMBER = "product_supplier_phone_number";
+        public static final String COLUMN_PRODUCT_SUPPLIER_NAME = "product_supplier_name";
+        public static final String COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER = "product_supplier_phone_number";
 
         public static final Uri SELECTED_URI_NULL = null;
 
