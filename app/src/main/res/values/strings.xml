@@ -19,7 +19,7 @@
     <string name="isbn_13">ISBN 13:</string>
     <string name="quantity_in_stock">left in stock</string>
     <string name="editor_add_description">Add Product to Inventory.</string>
-    <string name="editor_edit_description" translatable="true">Insert new data below to edit the selected product\'s data.</string>
+    <string name="editor_update_description" translatable="true">Insert new data below to edit the selected product\'s data.</string>
     <string name="hint_save_product_button">Add Product</string>
     <string name="menu_add_product">Add Product</string>
     <string name="menu_edit_product">Edit Product</string>
@@ -27,7 +27,7 @@
     <string name="menu_delete_all_products">Delete All Products</string>
     <string name="menu_delete_product">Delete Product</string>
     <string name="hint_cancel_product_button">Cancel</string>
-    <string name="display_text_empty">There are no products in the inventory to display at this time.\n\nAdd products to the database list by tapping "+" Button.</string>
+    <string name="display_text_empty">There are no products in the inventory to display at this time.\n\nAdd products to the database list by tapping the "+" Button.</string>
     <string name="current_inventory_size">Current Inventory Size:</string>
     <string name="table_details">Table Details:</string>
     <string name="unknown_entry">[unknown]</string>
@@ -45,13 +45,18 @@
     <string name="delete_selected_product_dialog">Caution:\n\nAre you sure you want to delete this product from the inventory?\nThis cannot be undone.</string>
     <string name="delete_all_products">Delete All Products</string>
     <string name="delete_selected_product">Delete Product</string>
+    <string name="discard_progress_dialog">You are about to leave this page without saving your progress.\n\nDo you wish to continue updating this product or discard all changes?</string>
+    <string name="discard">Discard</string>
     <string name="cancel">Cancel</string>
     <string name="successful_data_deletion_all">All product data deleted</string>
     <string name="successful_data_deletion_selected">Product data deleted</string>
     <string name="successful_data_saved">Product saved</string>
+    <string name="successful_data_updated">Product updated</string>
+    <string name="no_data_saved">No data saved</string>
     <string name="unsuccessful_data_saved">Error saving product</string>
     <string name="unsuccessful_data_deletion">Error deleting data</string>
     <string name="error_querying_database">Error querying database</string>
+    <string name="error_input_provide_attributes">Error compiling valid input for attributes into ContentValues</string>
 
     <string name="illegal_argument_exception_invalid_uri">Illegal URI</string>
     <string name="illegal_argument_exception_require_name">Product requires a valid name</string>
@@ -59,4 +64,5 @@
     <string name="illegal_argument_exception_require_quantity">Product requires a valid quantity</string>
     <string name="illegal_argument_exception_require_author">Product requires an valid author</string>
     <string name="illegal_argument_exception_require_isbn">Product requires an valid ISBN#</string>
+    <string name="illegal_argument_exception_unsuccesful_save">Error saving or updating product data</string>
 </resources>

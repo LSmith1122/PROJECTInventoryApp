@@ -9,6 +9,12 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/normal_text_size</item>
     </style>
+    <style name="quantity_edit_text">
+        <item name="android:layout_width">@dimen/quantity_edit_text_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
+        <item name="android:inputType">number</item>
+    </style>
     <style name="editor_action_buttons">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -19,8 +25,8 @@
     <style name="basic_fab">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_margin">@dimen/common_distance_large</item>
+        <item name="android:layout_alignParentBottom">true</item>
     </style>
     <style name="basic_edit_text_group">
         <item name="android:layout_width">wrap_content</item>

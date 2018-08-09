@@ -9,46 +9,37 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
 import com.seebaldtart.projectinventoryapp.data.ProductCursorAdapter;
 import com.seebaldtart.projectinventoryapp.data.ProductDBHelper;
-import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
 
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private final int zero = 0;
+    private final int ASYNC_LOADER_ID = 0;
+    private final int CURSOR_LOADER_ID = 1;
     private ListView listView;
     private TextView emptyText;
     private CursorAdapter cursorAdapter;
     private ProductDBHelper mDBHelper;
-    private final int addProduct = R.id.action_add_product;
-    private final int editProduct = R.id.action_edit_product;
-    private final int removeProduct = R.id.action_remove_product;
-    private final int deleteProducts = R.id.action_delete_all_products;
-    private final int zero = 0;
-    private final int ASYNC_LOADER_ID = 0;
-    private final int CURSOR_LOADER_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
         mDBHelper = new ProductDBHelper(this);
-        setUpViews();
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(CURSOR_LOADER_ID, null, this).forceLoad();
-    }
-
-    private void setUpViews() {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,8 +47,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 startEditorActivity(null);
             }
         });
-        listView = findViewById(R.id.list);
-        emptyText = findViewById(R.id.empty_view);
+        listView = (ListView) findViewById(R.id.list);
+        emptyText = (TextView) findViewById(R.id.empty_view);
         emptyText.setText(getResources().getString(R.string.display_text_empty));
         cursorAdapter = new ProductCursorAdapter(this, null);
         listView.setAdapter(cursorAdapter);
@@ -69,6 +60,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 startEditorActivity(selectedURI);
             }
         });
+        LoaderManager loaderManager = getLoaderManager();
+        loaderManager.initLoader(CURSOR_LOADER_ID, null, this).forceLoad();
     }
 
     private void startEditorActivity(Uri selectedURI) {
@@ -97,18 +90,19 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                         if (deleteRows > zero) {
                             Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.successful_data_deletion_all), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.unsuccessful_data_deletion), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.unsuccessful_data_deletion) + ", deleted " + deleteRows + " rows", Toast.LENGTH_SHORT).show();
                         }
                     }
                 };
+                deleteAllProductsDialog(deleteButtonClickListener);
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void deletePetDialog(DialogInterface.OnClickListener deleteButtonClickListener) {
+    private void deleteAllProductsDialog(DialogInterface.OnClickListener deleteButtonClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_all_product_dialog);
-        builder.setPositiveButton(R.string.delete_all_product_dialog, deleteButtonClickListener);
+        builder.setPositiveButton(R.string.delete_all_products, deleteButtonClickListener);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (dialog != null) {
@@ -127,13 +121,13 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 String[] projection = {
                         BookEntry._ID,
                         BookEntry.COLUMN_PRODUCT_NAME,
-                        BookEntry.COLUMN_PRODUCT_PRICE,
-                        BookEntry.COLUMN_PRODUCT_QUANTITY,
                         BookEntry.COLUMN_PRODUCT_AUTHOR,
                         BookEntry.COLUMN_PRODUCT_ISBN_13,
                         BookEntry.COLUMN_PRODUCT_ISBN_10,
                         BookEntry.COLUMN_PRODUCT_SUPPLIER_NAME,
-                        BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER};
+                        BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER,
+                        BookEntry.COLUMN_PRODUCT_PRICE,
+                        BookEntry.COLUMN_PRODUCT_QUANTITY};
                 return new CursorLoader(this, BookEntry.CONTENT_URI, projection, null, null, null);
             case ASYNC_LOADER_ID:
                 // TODO: Return null unless if planning to create an ASYNCTask, preferably for JSON Operations

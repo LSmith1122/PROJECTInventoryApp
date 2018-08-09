@@ -1,54 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parent_view_group"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/product_name_edit_text"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/product_name_text_size"
-        android:textStyle="bold"
-        android:layout_marginTop="@dimen/normal_view_margin"
-        android:layout_marginRight="@dimen/large_view_margin"
-        android:layout_marginLeft="@dimen/normal_view_margin"
-        android:layout_marginBottom="@dimen/small_view_margin"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:maxLines="@dimen/max_lines_product_name"
-        android:text="@string/example_text_name"/>
-    <TextView
-        android:id="@+id/product_isbn_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/product_isbn_text_size"
-        android:layout_marginLeft="@dimen/normal_view_margin"
-        android:layout_marginBottom="@dimen/normal_view_margin"
-        android:layout_below="@id/product_name_edit_text"
-        android:text="@string/example_text_isbn"/>
-    <TextView
-        android:id="@+id/product_quantity_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/normal_text_size"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/normal_view_margin"
-        android:layout_alignBottom="@id/product_isbn_edit_text"
-        android:gravity="bottom"
-        android:text="@string/example_text_quantity"/>
-    <TextView
-        android:id="@+id/product_price_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/large_text_size"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:layout_marginTop="@dimen/normal_view_margin"
-        android:layout_marginRight="@dimen/normal_view_margin"
-        android:layout_alignParentRight="true"
-        android:layout_above="@id/product_quantity_edit_text"
-        android:text="$49" />
+        android:layout_marginLeft="@dimen/normal_view_margin">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="@dimen/product_name_text_size"
+            android:layout_marginTop="@dimen/normal_view_margin"
+            android:layout_marginRight="@dimen/large_view_margin"
+            android:layout_marginBottom="@dimen/small_view_margin"
+            android:layout_marginEnd="@dimen/large_view_margin"
+            android:text="Test Book Title"/>
+        <TextView
+            android:id="@+id/product_isbn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/product_isbn_text_size"
+            android:layout_marginBottom="@dimen/normal_view_margin"
+            android:layout_below="@id/product_name"
+            android:text="Test Book ISBN13"/>
+        <TextView
+            android:id="@+id/product_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/normal_text_size"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/normal_view_margin"
+            android:layout_alignBottom="@id/product_isbn"
+            android:gravity="bottom"
+            android:text="12 left in inventory"/>
+        <Button
+            android:id="@+id/order_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="Order"
+            android:textStyle="bold"
+            android:textSize="@dimen/normal_text_size"
+            android:textColor="@android:color/white"
+            android:background="@color/colorAccent"
+            android:layout_marginRight="@dimen/normal_view_margin"
+            android:layout_below="@id/product_isbn"
+            android:layout_alignParentRight="true"/>
+        <TextView
+            android:id="@+id/product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/large_text_size"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/normal_view_margin"
+            android:layout_marginRight="@dimen/normal_view_margin"
+            android:layout_marginLeft="@dimen/large_view_margin"
+            android:layout_alignParentRight="true"
+            android:layout_above="@id/product_quantity"
+            android:text="$24.99"/>
+    </RelativeLayout>
+</LinearLayout>

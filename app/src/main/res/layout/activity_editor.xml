@@ -1,121 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_view_group"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/common_distance_large"
     tools:context=".EditorActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:padding="@dimen/common_distance_large">
 
-        <TextView
-            android:id="@+id/description_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/common_distance_large"
-            android:text="@string/editor_add_description" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/content_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <LinearLayout style="@style/basic_edit_text_group">
+                <TextView
+                    android:id="@+id/description_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/common_distance_large"
+                    android:text="@string/editor_add_description" />
 
-                <EditText
-                    android:id="@+id/product_name_edit_text"
-                    style="@style/basic_edit_text"
-                    android:digits="@string/allowed_characters_for_text"
-                    android:hint="@string/hint_product_name"
-                    android:inputType="textShortMessage" />
+                <LinearLayout
+                    android:id="@+id/content_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <TextView style="@style/required_field_asterisk" />
+                    <LinearLayout style="@style/basic_edit_text_group">
+
+                        <EditText
+                            android:id="@+id/product_name_edit_text"
+                            style="@style/basic_edit_text"
+                            android:digits="@string/allowed_characters_for_text"
+                            android:hint="@string/hint_product_name"
+                            android:inputType="textShortMessage" />
+
+                        <TextView style="@style/required_field_asterisk" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/basic_edit_text_group">
+
+                        <EditText
+                            android:id="@+id/product_author_edit_text"
+                            style="@style/basic_edit_text"
+                            android:digits="@string/allowed_characters_for_text"
+                            android:hint="@string/hint_product_author"
+                            android:inputType="textShortMessage" />
+
+                        <TextView style="@style/required_field_asterisk" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/product_isbn13_edit_text"
+                        style="@style/basic_edit_text"
+                        android:digits="@string/allowed_characters_for_text"
+                        android:hint="@string/hint_product_isbn13"
+                        android:inputType="textShortMessage" />
+
+                    <EditText
+                        android:id="@+id/product_isbn10_edit_text"
+                        style="@style/basic_edit_text"
+                        android:digits="@string/allowed_characters_for_text"
+                        android:hint="@string/hint_product_isbn10"
+                        android:inputType="textShortMessage" />
+
+                    <LinearLayout style="@style/basic_edit_text_group">
+
+                        <EditText
+                            android:id="@+id/supplier_name_edit_text"
+                            style="@style/basic_edit_text"
+                            android:digits="@string/allowed_characters_for_text"
+                            android:hint="@string/hint_supplier_name"
+                            android:inputType="textShortMessage" />
+
+                        <TextView style="@style/required_field_asterisk" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/basic_edit_text_group">
+
+                        <EditText
+                            android:id="@+id/supplier_phone_number_edit_text"
+                            style="@style/basic_edit_text"
+                            android:hint="@string/hint_supplier_phone_number"
+                            android:inputType="phone" />
+
+                        <TextView style="@style/required_field_asterisk" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/basic_edit_text_group">
+
+                        <EditText
+                            android:id="@+id/product_price_edit_text"
+                            style="@style/basic_edit_text"
+                            android:hint="@string/hint_product_price"
+                            android:inputType="numberDecimal" />
+
+                        <TextView style="@style/required_field_asterisk" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/product_quantity_view_group"
+                    style="@style/basic_edit_text_group"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/normal_view_margin">
+
+                    <ImageButton
+                        android:id="@+id/product_quantity_decrement_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        android:src="@drawable/baseline_remove_white_48_1"
+                        android:scaleType="centerCrop"
+                        android:layout_margin="@dimen/small_view_margin"
+                        android:foreground="?android:selectableItemBackground"/>
+                    <EditText
+                        android:id="@+id/product_quantity_edit_text"
+                        style="@style/quantity_edit_text"
+                        android:hint="@string/hint_product_quantity"
+                        android:inputType="number" />
+                    <ImageButton
+                        android:id="@+id/product_quantity_increment_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        android:src="@drawable/baseline_add_white_48_1"
+                        android:scaleType="centerCrop"
+                        android:layout_margin="@dimen/small_view_margin"
+                        android:foreground="?android:selectableItemBackground"/>
+
+                    <TextView style="@style/required_field_asterisk" />
+                </LinearLayout>
             </LinearLayout>
-
-            <LinearLayout style="@style/basic_edit_text_group">
-
-                <EditText
-                    android:id="@+id/product_author_edit_text"
-                    style="@style/basic_edit_text"
-                    android:digits="@string/allowed_characters_for_text"
-                    android:hint="@string/hint_product_author"
-                    android:inputType="textShortMessage" />
-
-                <TextView style="@style/required_field_asterisk" />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/product_isbn13_edit_text"
-                style="@style/basic_edit_text"
-                android:digits="@string/allowed_characters_for_text"
-                android:hint="@string/hint_product_isbn13"
-                android:inputType="textShortMessage" />
-
-            <EditText
-                android:id="@+id/product_isbn10_edit_text"
-                style="@style/basic_edit_text"
-                android:digits="@string/allowed_characters_for_text"
-                android:hint="@string/hint_product_isbn10"
-                android:inputType="textShortMessage" />
-
-            <LinearLayout style="@style/basic_edit_text_group">
-
-                <EditText
-                    android:id="@+id/product_price_edit_text"
-                    style="@style/basic_edit_text"
-                    android:hint="@string/hint_product_price"
-                    android:inputType="numberDecimal" />
-
-                <TextView style="@style/required_field_asterisk" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/basic_edit_text_group">
-
-                <EditText
-                    android:id="@+id/product_quantity_edit_text"
-                    style="@style/basic_edit_text"
-                    android:hint="@string/hint_product_quantity"
-                    android:inputType="number" />
-
-                <TextView style="@style/required_field_asterisk" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/basic_edit_text_group">
-
-                <EditText
-                    android:id="@+id/supplier_name_edit_text"
-                    style="@style/basic_edit_text"
-                    android:digits="@string/allowed_characters_for_text"
-                    android:hint="@string/hint_supplier_name"
-                    android:inputType="textShortMessage" />
-
-                <TextView style="@style/required_field_asterisk" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/basic_edit_text_group">
-
-                <EditText
-                    android:id="@+id/supplier_phone_number_edit_text"
-                    style="@style/basic_edit_text"
-                    android:hint="@string/hint_supplier_phone_number"
-                    android:inputType="phone" />
-
-                <TextView style="@style/required_field_asterisk" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/save_product_button"
         style="@style/basic_fab"
         android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
         android:src="@drawable/baseline_check_white_48" />
 
     <android.support.design.widget.FloatingActionButton
