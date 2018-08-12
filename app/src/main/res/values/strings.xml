@@ -30,7 +30,7 @@
     <string name="menu_delete_all_products">Delete All Products</string>
     <string name="menu_delete_product">Delete Product</string>
     <string name="hint_cancel_product_button">Cancel</string>
-    <string name="display_text_empty">There are no products in the inventory to display at this time.\n\nAdd products to the database list by tapping the "+" Button.</string>
+    <string name="display_text_empty">There are no products in the inventory to display at this time.\n\nAdd products to the database list by tapping the \"+\" Button.</string>
     <string name="display_text_loading">Loading.\n\nPlease wait for inventory data to update.</string>
     <string name="current_inventory_size">Current Inventory Size:</string>
     <string name="table_details">Table Details:</string>

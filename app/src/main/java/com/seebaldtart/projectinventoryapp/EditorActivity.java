@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +36,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private final int CURSOR_LOADER_ID = 1;
     private String LOG_TAG;
     private TextView descriptionText;
-    private LinearLayout contentGroup;
     private EditText productNameEditText;
     private EditText productAuthorEditText;
     private EditText productISBN13EditText;
@@ -48,6 +46,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText productQuantityEditText;
     private ImageButton productQuantityButtonIncrement;
     private ImageButton productQuantityButtonDecrement;
+    private ImageButton priceQuantityButtonIncrement;
+    private ImageButton priceQuantityButtonDecrement;
     private FloatingActionButton saveButton;
     private FloatingActionButton cancelButton;
     private boolean mHasBeenTouched = false;
@@ -62,6 +62,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private double productPrice;
     private int productQuantity;
     private int mCurrentQuantity;
+    private double mCurrentPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +105,35 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 productQuantityEditText.setSelection(productQuantityEditText.getText().length());
             }
         });
+        priceQuantityButtonIncrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentPrice = getPriceValue();
+                mCurrentPrice = mCurrentPrice + 10;
+                productPriceEditText.setText(createTextForPrice(mCurrentPrice));
+                productPriceEditText.setSelection(productPriceEditText.getText().length());
+            }
+        });
+        priceQuantityButtonDecrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentPrice = getPriceValue();
+                mCurrentPrice = mCurrentPrice - 10;
+                if (mCurrentPrice < 0) {
+                    mCurrentPrice = 0;
+                }
+                productPriceEditText.setText(createTextForPrice(mCurrentPrice));
+                productPriceEditText.setSelection(productPriceEditText.getText().length());
+            }
+        });
     }
 
     private int getQuantityValue() {
         return Integer.parseInt(productQuantityEditText.getText().toString());
+    }
+
+    private double getPriceValue() {
+        return Double.parseDouble(productPriceEditText.getText().toString());
     }
 
     private void retrieveIntentData() {
@@ -138,16 +164,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 String isbn10 = cursor.getString(isbn10ColumnIndex);
                 String supplierName = cursor.getString(supplierNameColumnIndex);
                 String supplierPhone = cursor.getString(supplierPhoneColumnIndex);
-                double price = cursor.getDouble(priceColumnIndex);
-                int quantity = cursor.getInt(quantityColumnIndex);
-                mCurrentQuantity = quantity;
+                mCurrentPrice = cursor.getDouble(priceColumnIndex);
+                mCurrentQuantity = cursor.getInt(quantityColumnIndex);
                 productNameEditText.setText(name);
                 productAuthorEditText.setText(author);
                 productISBN13EditText.setText(compileISBNNumber(isbn13, BookEntry.MAX_ISBN_13));
                 productISBN10EditText.setText(compileISBNNumber(isbn10, BookEntry.MAX_ISBN_10));
                 productSupplierNameEditText.setText(supplierName);
                 compileSupplierPhoneNumber(supplierPhone);
-                productPriceEditText.setText(createTextForPrice(price));
+                productPriceEditText.setText(createTextForPrice(mCurrentPrice));
                 productQuantityEditText.setText(String.valueOf(mCurrentQuantity));
             } catch (NullPointerException e) {
                 Log.e(LOG_TAG, "Error updating UI", e);
@@ -166,7 +191,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private void setUpViews() {
         descriptionText = findViewById(R.id.description_text_view);
-        contentGroup = findViewById(R.id.content_group);
         productNameEditText = findViewById(R.id.product_name_edit_text);
         productAuthorEditText = findViewById(R.id.product_author_edit_text);
         productISBN13EditText = findViewById(R.id.product_isbn13_edit_text);
@@ -177,6 +201,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         productPriceEditText = findViewById(R.id.product_price_edit_text);
         productQuantityButtonIncrement = findViewById(R.id.product_quantity_increment_button);
         productQuantityButtonDecrement = findViewById(R.id.product_quantity_decrement_button);
+        priceQuantityButtonIncrement = findViewById(R.id.product_price_increment_button);
+        priceQuantityButtonDecrement = findViewById(R.id.product_price_decrement_button);
         saveButton = findViewById(R.id.save_product_button);
         cancelButton = findViewById(R.id.cancel_button);
         ;
@@ -592,6 +618,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         } else {
             mCurrentQuantity = 0;
             productQuantityEditText.setText(String.valueOf(mCurrentQuantity));
+            mCurrentPrice = 0;
+            productPriceEditText.setText(createTextForPrice(mCurrentPrice));
         }
         initButtonOnClickListeners();
     }

@@ -3,6 +3,8 @@ package com.seebaldtart.projectinventoryapp;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +27,8 @@ import android.widget.Toast;
 import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
 import com.seebaldtart.projectinventoryapp.data.ProductCursorAdapter;
 
+import java.util.ArrayList;
+
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private final int zero = 0;
     private final int ASYNC_LOADER_ID = 0;
@@ -32,6 +37,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     private LinearLayout emptyGroup;
     private LinearLayout loadingGroup;
     private CursorAdapter cursorAdapter;
+    private Uri mSelectedURI;
+    private Cursor mCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,22 +52,37 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 startEditorActivity(null);
             }
         });
+        setupViews();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("TEST", "onClick working...");
+                mSelectedURI = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
+                if (mCursor != null) {
+                    switch (view.getId()) {
+                        case R.id.parent_view_group:
+                            Log.i("TEST", "Current ID: " + id);
+                            startEditorActivity(mSelectedURI);
+                            break;
+                        default:
+                            Log.i("TEST", "Unknown ListView item...");
+                            break;
+                    }
+                }
+            }
+        });
+        LoaderManager loaderManager = getLoaderManager();
+        loaderManager.initLoader(CURSOR_LOADER_ID, null, this).forceLoad();
+    }
+
+    private void setupViews() {
         listView = (ListView) findViewById(R.id.list);
-        emptyGroup = (LinearLayout) findViewById(R.id.empty_view);
+        emptyGroup = (LinearLayout) findViewById(R.id.empty_group);
         loadingGroup = (LinearLayout) findViewById(R.id.loading_group);
         cursorAdapter = new ProductCursorAdapter(this, null);
         emptyGroup.setVisibility(View.GONE);
         listView.setAdapter(cursorAdapter);
         listView.setEmptyView(loadingGroup);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Uri selectedURI = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
-                startEditorActivity(selectedURI);
-            }
-        });
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(CURSOR_LOADER_ID, null, this).forceLoad();
     }
 
     private void startEditorActivity(Uri selectedURI) {
@@ -115,6 +137,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public Loader<Cursor> onCreateLoader(int loaderID, Bundle args) {
+        listView.setEmptyView(loadingGroup);
         switch (loaderID) {
             case CURSOR_LOADER_ID:
                 String[] projection = {
@@ -138,8 +161,10 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
         cursorAdapter.swapCursor(cursor);
+        mCursor = cursor;
+        Log.i("TEST", "onLoadFinished...");
         if (cursor == null) {
             loadingGroup.setVisibility(View.GONE);
             listView.setEmptyView(emptyGroup);
@@ -149,5 +174,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         cursorAdapter.swapCursor(null);
+    }
+
+    private void createToast(String messageString) {
+        Toast.makeText(getApplicationContext(), messageString, Toast.LENGTH_SHORT).show();
     }
 }
