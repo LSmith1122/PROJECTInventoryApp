@@ -13,7 +13,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +29,10 @@ import android.widget.Toast;
 
 import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
 
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private final int INVALID = -1;
@@ -130,8 +135,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 int quantityColumnIndex = cursor.getColumnIndexOrThrow(BookEntry.COLUMN_PRODUCT_QUANTITY);
                 String name = cursor.getString(nameColumnIndex);
                 String author = cursor.getString(authorColumnIndex);
-                int isbn13 = cursor.getInt(isbn13ColumnIndex);
-                int isbn10 = cursor.getInt(isbn10ColumnIndex);
+                String isbn13 = cursor.getString(isbn13ColumnIndex);
+                String isbn10 = cursor.getString(isbn10ColumnIndex);
                 String supplierName = cursor.getString(supplierNameColumnIndex);
                 String supplierPhone = cursor.getString(supplierPhoneColumnIndex);
                 double price = cursor.getDouble(priceColumnIndex);
@@ -139,10 +144,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 mCurrentQuantity = quantity;
                 productNameEditText.setText(name);
                 productAuthorEditText.setText(author);
-                productISBN13EditText.setText(createISBNString(isbn13));
-                productISBN10EditText.setText(createISBNString(isbn10));
+                productISBN13EditText.setText(compileISBNNumber(isbn13, BookEntry.MAX_ISBN_13));
+                productISBN10EditText.setText(compileISBNNumber(isbn10, BookEntry.MAX_ISBN_10));
                 productSupplierNameEditText.setText(supplierName);
-                productSupplierPhoneNumberEditText.setText(supplierPhone);
+                compileSupplierPhoneNumber(supplierPhone);
                 productPriceEditText.setText(createTextForPrice(price));
                 productQuantityEditText.setText(String.valueOf(mCurrentQuantity));
             } catch (NullPointerException e) {
@@ -154,14 +159,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private String createTextForPrice(double value) {
         DecimalFormat format = new DecimalFormat("0.00");
         return format.format(value);
-    }
-
-    private String createISBNString(int value) {
-        if (value == zero) {
-            return String.valueOf(zero);
-        } else {
-            return String.valueOf(value);
-        }
     }
 
     private boolean isEmpty(String value) {
@@ -182,7 +179,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         productQuantityButtonIncrement = findViewById(R.id.product_quantity_increment_button);
         productQuantityButtonDecrement = findViewById(R.id.product_quantity_decrement_button);
         saveButton = findViewById(R.id.save_product_button);
-        cancelButton = findViewById(R.id.cancel_button);
+        cancelButton = findViewById(R.id.cancel_button);;
         setupViewOnClickListeners();
     }
 
@@ -213,6 +210,165 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 showUnsavedChangesDialog(discardProgressDialogOnClickListener);
             }
         });
+        productSupplierPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
+            int mSwitch = 0;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = productSupplierPhoneNumberEditText.length();
+                if (mSwitch == 1) {
+                    if (length > 0) {
+                        productSupplierPhoneNumberEditText.removeTextChangedListener(this);
+                        compileSupplierPhoneNumber(productSupplierPhoneNumberEditText.getText().toString().trim());
+                        productSupplierPhoneNumberEditText.addTextChangedListener(this);
+                    }
+                } else {
+                    mSwitch++;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        productISBN13EditText.addTextChangedListener(new TextWatcher() {
+            int mSwitch = 0;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = productISBN13EditText.length();
+                if (mSwitch == 1) {
+                    if (length > 0) {
+                        productISBN13EditText.removeTextChangedListener(this);
+                        productISBN13EditText.setText(compileISBNNumber(productISBN13EditText.getText().toString().trim(), BookEntry.MAX_ISBN_13));
+                        productISBN13EditText.setSelection(productISBN13EditText.getText().length());
+                        productISBN13EditText.addTextChangedListener(this);
+                    }
+                } else {
+                    mSwitch++;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        productISBN10EditText.addTextChangedListener(new TextWatcher() {
+            int mSwitch = 0;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = productISBN10EditText.length();
+                if (mSwitch == 1) {
+                    if (length > 0) {
+                        productISBN10EditText.removeTextChangedListener(this);
+                        productISBN10EditText.setText(compileISBNNumber(productISBN10EditText.getText().toString().trim(), BookEntry.MAX_ISBN_10));
+                        productISBN10EditText.setSelection(productISBN10EditText.getText().length());
+                        productISBN10EditText.addTextChangedListener(this);
+                    }
+                } else {
+                    mSwitch++;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void compileSupplierPhoneNumber(String value) {
+        String appendage = "-";
+        String currentString = value;
+        extractNumberFromFormat(currentString);
+        String beginning, phoneNumberString = "";
+        if (!TextUtils.isEmpty(currentString)) {
+            phoneNumberString = currentString;
+            if (currentString.length() > 3) {
+                beginning = "(" + currentString.substring(0,3) + ") ";
+                phoneNumberString = beginning;
+                if (currentString.length() >= 6) {
+                    if (currentString.length() > 6) {
+                        phoneNumberString = beginning + currentString.substring(3,6) + appendage + currentString.substring(6);
+                    } else {
+                        phoneNumberString = beginning + currentString.substring(3);
+                    }
+                } else {
+                    phoneNumberString = beginning + currentString.substring(3);
+                }
+            }
+        }
+        productSupplierPhoneNumberEditText.setText(phoneNumberString);
+        int lastPos = productSupplierPhoneNumberEditText.length();
+        productSupplierPhoneNumberEditText.setSelection(lastPos);
+    }
+
+    private String compileISBNNumber(String value, int max) {
+        String appendage = "-";
+        String ISBNString = "";
+        String first, second, third, fourth = "";
+        String currentString = extractNumberFromFormat(value);
+        switch (max) {
+            case BookEntry.MAX_ISBN_13:
+                // Example ISBN 13#: 978-3-16-148410-0
+                if (!TextUtils.isEmpty(currentString)) {
+                    ISBNString = currentString;
+                    if (currentString.length() > 3) {
+                        first = currentString.substring(0, 3) + appendage;
+                        ISBNString = first  + currentString.substring(3);
+                        if (currentString.length() > 4) {
+                            second = first + currentString.substring(3, 4) + appendage;
+                            ISBNString = second + currentString.substring(4);
+                            if (currentString.length() > 6) {
+                                third = second + currentString.substring(4, 6) + appendage;
+                                ISBNString = third + currentString.substring(6);
+                                if (currentString.length() > 12) {
+                                    fourth = third + currentString.substring(6, 12) + appendage;
+                                    ISBNString = fourth + currentString.substring(12);
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            case BookEntry.MAX_ISBN_10:
+                // Example ISBN 10#: 0-19-852663-6
+                if (!TextUtils.isEmpty(currentString)) {
+                    ISBNString = currentString;
+                    if (currentString.length() > 1) {
+                        first = currentString.substring(0, 1) + appendage;
+                        ISBNString = first  + currentString.substring(1);
+                        if (currentString.length() > 3) {
+                            second = first + currentString.substring(1, 3) + appendage;
+                            ISBNString = second + currentString.substring(3);
+                            if (currentString.length() > 9) {
+                                third = second + currentString.substring(3, 9) + appendage;
+                                ISBNString = third + currentString.substring(9);
+                            }
+                        }
+                    }
+                }
+                return ISBNString;
+            default:
+                break;
+        }
+        Log.i(LOG_TAG, "Initial compileISBN: " + value + " compileISBN: " + ISBNString);
+        return ISBNString;
     }
 
     private void initViewOnClickListeners(View view) {
@@ -243,32 +399,72 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private void recordUserInput() {
         productName = productNameEditText.getText().toString().trim();
         productAuthor = productAuthorEditText.getText().toString().trim();
-        productISBN13 = productISBN13EditText.getText().toString().trim();
-        productISBN10 = productISBN10EditText.getText().toString().trim();
         productSupplierName = productSupplierNameEditText.getText().toString().trim();
-        productSupplierPhone = productSupplierPhoneNumberEditText.getText().toString().trim();
+        productSupplierPhone = extractNumberFromFormat(productSupplierPhoneNumberEditText.getText().toString().trim());
         String priceString = productPriceEditText.getText().toString().trim();
-        productPrice = zero;
-        DecimalFormat format = new DecimalFormat("0.00");
-        if (!isEmpty(priceString)) {
-            Log.i(LOG_TAG, "Price String: " + priceString + ", Price Double: " + format.format(Double.parseDouble(priceString)));
-            productPrice = Double.valueOf(format.format(Double.parseDouble(priceString)));
+        productPrice = compilePriceString(priceString);
+        String quantityString = productQuantityEditText.getText().toString().trim();
+        productQuantity = Integer.parseInt(compileQuantityString(quantityString));
+        String isbn13 = productISBN13EditText.getText().toString().trim();
+        String isbn10 = productISBN10EditText.getText().toString().trim();
+        createToast("ISBN 13: " + isbn13);
+        if (!isEmpty(isbn13)) {
+            productISBN13 = String.valueOf(extractNumberFromFormat(isbn13));
         } else {
-            productPrice = Double.valueOf(format.format(zero));
+            productISBN13 = String.valueOf(zero);
         }
-        productQuantity = Integer.parseInt(productQuantityEditText.getText().toString().trim());
+        if (!isEmpty(isbn10)) {
+            productISBN10 = String.valueOf(extractNumberFromFormat(isbn10));
+        } else {
+            productISBN10 = String.valueOf(zero);
+        }
+    }
+
+    private String extractNumberFromFormat(String value) {
+        String currentString = value;
+        currentString = currentString.replace("-", "");
+        currentString = currentString.replace("(", "");
+        currentString = currentString.replace(")", "");
+        currentString = currentString.replace(" ", "");
+        return currentString;
+    }
+
+    private double compilePriceString(String price) {
+        DecimalFormat format = new DecimalFormat("0.00");
+        if (!isEmpty(price)) {
+            return Double.valueOf(format.format(Double.parseDouble(price)));
+        } else {
+            return Double.valueOf(format.format(zero));
+        }
+    }
+
+    private String compileQuantityString(String quantity) {
+        if (TextUtils.isEmpty(quantity)) {
+            quantity = String.valueOf(zero);
+        }
+        return quantity;
     }
 
     private void initImplementContentValues(ContentValues userInputValues) {
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_NAME, productName);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_AUTHOR, productAuthor);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_13, productISBN13);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_10, productISBN10);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_NAME, productSupplierName);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, productSupplierPhone);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_PRICE, productPrice);
-        Log.i(LOG_TAG, "Product Price: " + productPrice);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
+        if (isSanityCheckGood()) {
+            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_NAME, productName);
+            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_AUTHOR, productAuthor);
+            createToast("initImplement: " + productISBN13);
+            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_13, productISBN13);
+            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_10, productISBN10);
+            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_NAME, productSupplierName);
+            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, productSupplierPhone);
+            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_PRICE, productPrice);
+            Log.i(LOG_TAG, "Product Price: " + productPrice);
+            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
+        }
+    }
+
+    private boolean isSanityCheckGood() {
+//        if (!isEmpty(productName)
+//                && !isEmpty(productAuthor)
+//                && )
+        return true;
     }
 
     private void implementContentValues(ContentValues contentValues, String key, Object userInput) {
@@ -405,6 +601,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoaderReset(Loader<Cursor> loader) {
         clearInputFields();
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

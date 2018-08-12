@@ -15,13 +15,15 @@ public class InventoryContract {
         public static final String TABLE_NAME = "books";
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_PRODUCT_NAME = "product_name";
-        public static final String COLUMN_PRODUCT_ISBN_10 = "product_isbn_10";
         public static final String COLUMN_PRODUCT_ISBN_13 = "product_isbn_13";
+        public static final String COLUMN_PRODUCT_ISBN_10 = "product_isbn_10";
         public static final String COLUMN_PRODUCT_AUTHOR = "product_author";
         public static final String COLUMN_PRODUCT_SUPPLIER_NAME = "product_supplier_name";
         public static final String COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER = "product_supplier_phone_number";
         public static final String COLUMN_PRODUCT_QUANTITY = "product_quantity";
         public static final String COLUMN_PRODUCT_PRICE = "product_price";
+        public static final int MAX_ISBN_13 = 13;
+        public static final int MAX_ISBN_10 = 10;
 
         public static final String[] INPUT_ATTRIBUTE_LIST = {
                 COLUMN_PRODUCT_NAME,

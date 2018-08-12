@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_view_group"
     android:layout_width="match_parent"
@@ -62,16 +60,16 @@
                     <EditText
                         android:id="@+id/product_isbn13_edit_text"
                         style="@style/basic_edit_text"
-                        android:digits="@string/allowed_characters_for_text"
                         android:hint="@string/hint_product_isbn13"
-                        android:inputType="textShortMessage" />
+                        android:inputType="number"
+                        android:maxLength="17"/>
 
                     <EditText
                         android:id="@+id/product_isbn10_edit_text"
                         style="@style/basic_edit_text"
-                        android:digits="@string/allowed_characters_for_text"
                         android:hint="@string/hint_product_isbn10"
-                        android:inputType="textShortMessage" />
+                        android:inputType="number"
+                        android:maxLength="17"/>
 
                     <LinearLayout style="@style/basic_edit_text_group">
 
@@ -91,7 +89,8 @@
                             android:id="@+id/supplier_phone_number_edit_text"
                             style="@style/basic_edit_text"
                             android:hint="@string/hint_supplier_phone_number"
-                            android:inputType="phone" />
+                            android:inputType="number"
+                            android:maxLength="14"/>
 
                         <TextView style="@style/required_field_asterisk" />
                     </LinearLayout>
@@ -108,37 +107,51 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_quantity"
+                    android:textSize="@dimen/normal_text_size"
+                    android:layout_gravity="center_horizontal"/>
+
                 <LinearLayout
                     android:id="@+id/product_quantity_view_group"
-                    style="@style/basic_edit_text_group"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="@dimen/normal_view_margin">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/very_large_view_margin"
+                    android:layout_marginTop="@dimen/normal_view_margin"
+                    android:gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/product_quantity_edit_text"
+                        style="@style/quantity_edit_text"
+                        android:gravity="right"
+                        android:hint="@string/hint_product_quantity"
+                        android:inputType="number" />
 
                     <ImageButton
                         android:id="@+id/product_quantity_decrement_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorAccent"
-                        android:src="@drawable/baseline_remove_white_48_1"
-                        android:scaleType="centerCrop"
                         android:layout_margin="@dimen/small_view_margin"
-                        android:foreground="?android:selectableItemBackground"/>
-                    <EditText
-                        android:id="@+id/product_quantity_edit_text"
-                        style="@style/quantity_edit_text"
-                        android:hint="@string/hint_product_quantity"
-                        android:inputType="number" />
+                        android:background="@color/colorAccent"
+                        android:foreground="?android:selectableItemBackground"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/baseline_remove_white_48_1" />
+
                     <ImageButton
                         android:id="@+id/product_quantity_increment_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorAccent"
-                        android:src="@drawable/baseline_add_white_48_1"
-                        android:scaleType="centerCrop"
                         android:layout_margin="@dimen/small_view_margin"
-                        android:foreground="?android:selectableItemBackground"/>
+                        android:background="@color/colorAccent"
+                        android:foreground="?android:selectableItemBackground"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/baseline_add_white_48_1" />
 
-                    <TextView style="@style/required_field_asterisk" />
+                    <TextView
+                        style="@style/required_field_asterisk"
+                        android:layout_gravity="top" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>

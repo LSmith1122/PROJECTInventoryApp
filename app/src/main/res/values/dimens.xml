@@ -6,6 +6,7 @@
     <dimen name="normal_view_margin">8dp</dimen>
     <dimen name="small_view_margin">4dp</dimen>
     <dimen name="large_view_margin">16dp</dimen>
+    <dimen name="very_large_view_margin">72dp</dimen>
     <dimen name="min_size_price">50dp</dimen>
     <dimen name="basic_edit_text_width">250dp</dimen>
     <dimen name="quantity_edit_text_width">75dp</dimen>

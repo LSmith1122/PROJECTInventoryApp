@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -225,6 +226,29 @@ public class ProductProvider extends ContentProvider {
         }
         return false;
     }
+
+//    private boolean checkForValidKey(ContentValues values, String key, boolean bool) {
+//        int isbn13Length = 13;
+//        int isbn10Length = 10;
+//        if (values.containsKey(key) && !TextUtils.isEmpty(String.valueOf(values.get(key)))) {
+//            String input = String.valueOf(values.get(key));
+//            if (key.equals(BookEntry.COLUMN_PRODUCT_ISBN_13)) {
+//                if (input.length() == isbn13Length) {
+//                    return true;
+//                } else {
+//                    createToast("Invalid ISBN Number");
+//                }
+//            }
+//            if (key.equals(BookEntry.COLUMN_PRODUCT_ISBN_10)) {
+//                if (input.length() == isbn10Length) {
+//                    return true;
+//                } else {
+//                    createToast("Invalid ISBN Number");
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     private void putValueToNewContentValues(String key, ContentValues oldValues, ContentValues newValues) {
         String value = null;
