@@ -9,7 +9,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/normal_text_size</item>
     </style>
-    <style name="quantity_edit_text">
+    <style name="numerical_edit_text">
         <item name="android:layout_width">@dimen/quantity_edit_text_width</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/normal_text_size</item>
@@ -39,7 +39,7 @@
         <item name="android:textColor">@android:color/holo_red_dark</item>
         <item name="android:text">@string/required_field_asterisk</item>
         <item name="android:textSize">@dimen/normal_text_size</item>
-        <item name="android:minWidth">@dimen/required_field_asterisk_minSize</item>
-        <item name="android:minHeight">@dimen/required_field_asterisk_minSize</item>
+        <item name="android:minWidth">@dimen/required_field_asterisk_minSize_width</item>
+        <item name="android:minHeight">@dimen/required_field_asterisk_minSize_height</item>
     </style>
 </resources>

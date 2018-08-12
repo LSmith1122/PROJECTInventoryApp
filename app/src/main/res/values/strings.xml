@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">PROJECTInventoryApp</string>
     <string name="main_activity_label">Inventory</string>
+    <string name="catalog_label_books">Books</string>
     <string name="sale">Sale</string>
     <string name="editor_label_add">Add Product</string>
     <string name="editor_label_update">Update Product</string>
     <string name="hint_product_id">Product ID</string>
     <string name="hint_product_name">Product Name</string>
-    <string name="product_quantity">Quantity</string>
+    <string name="product_quantity">x</string>
     <string name="hint_product_price">Price</string>
     <string name="hint_product_quantity">0</string>
     <string name="hint_product_author">Author</string>
@@ -30,11 +31,13 @@
     <string name="menu_delete_product">Delete Product</string>
     <string name="hint_cancel_product_button">Cancel</string>
     <string name="display_text_empty">There are no products in the inventory to display at this time.\n\nAdd products to the database list by tapping the "+" Button.</string>
+    <string name="display_text_loading">Loading.\n\nPlease wait for inventory data to update.</string>
     <string name="current_inventory_size">Current Inventory Size:</string>
     <string name="table_details">Table Details:</string>
     <string name="unknown_entry">[unknown]</string>
     <string name="id_string">ID:</string>
     <string name="allowed_characters_for_text">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890.:!,-</string>
+    <string name="allowed_characters_for_price_number">1234567890.</string>
     <string name="allowed_characters_for_phone">1234567890.-()</string>
     <string name="invalid_entry">Invalid Entry.</string>
     <string name="required_field_asterisk">*</string>
@@ -62,7 +65,6 @@
     <string name="unsuccessful_product_sale_update">Error updating sale of product&#8230;</string>
     <string name="error_querying_database">Error querying database</string>
     <string name="error_input_provide_attributes">Error compiling valid input for attributes into ContentValues</string>
-
     <string name="illegal_argument_exception_invalid_uri">Illegal URI</string>
     <string name="illegal_argument_exception_require_name">Product requires a valid name</string>
     <string name="illegal_argument_exception_require_price">Product requires a valid price</string>
@@ -70,4 +72,5 @@
     <string name="illegal_argument_exception_require_author">Product requires an valid author</string>
     <string name="illegal_argument_exception_require_isbn">Product requires an valid ISBN#</string>
     <string name="illegal_argument_exception_unsuccesful_save">Error saving or updating product data</string>
+    <string name="price_monetary_symbol">$</string>
 </resources>

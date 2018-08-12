@@ -29,10 +29,7 @@ import android.widget.Toast;
 
 import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
 
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private final int INVALID = -1;
@@ -92,6 +89,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 mCurrentQuantity = getQuantityValue();
                 mCurrentQuantity++;
                 productQuantityEditText.setText(String.valueOf(mCurrentQuantity));
+                productQuantityEditText.setSelection(productQuantityEditText.getText().length());
             }
         });
         productQuantityButtonDecrement.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +101,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     mCurrentQuantity = 0;
                 }
                 productQuantityEditText.setText(String.valueOf(mCurrentQuantity));
+                productQuantityEditText.setSelection(productQuantityEditText.getText().length());
             }
         });
     }
@@ -179,7 +178,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         productQuantityButtonIncrement = findViewById(R.id.product_quantity_increment_button);
         productQuantityButtonDecrement = findViewById(R.id.product_quantity_decrement_button);
         saveButton = findViewById(R.id.save_product_button);
-        cancelButton = findViewById(R.id.cancel_button);;
+        cancelButton = findViewById(R.id.cancel_button);
+        ;
         setupViewOnClickListeners();
     }
 
@@ -212,6 +212,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
         productSupplierPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
             int mSwitch = 0;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -238,6 +239,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
         productISBN13EditText.addTextChangedListener(new TextWatcher() {
             int mSwitch = 0;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -265,6 +267,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
         productISBN10EditText.addTextChangedListener(new TextWatcher() {
             int mSwitch = 0;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -293,23 +296,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void compileSupplierPhoneNumber(String value) {
-        String appendage = "-";
         String currentString = value;
-        extractNumberFromFormat(currentString);
+        currentString = extractNumberFromFormat(currentString);
         String beginning, phoneNumberString = "";
         if (!TextUtils.isEmpty(currentString)) {
             phoneNumberString = currentString;
             if (currentString.length() > 3) {
-                beginning = "(" + currentString.substring(0,3) + ") ";
-                phoneNumberString = beginning;
-                if (currentString.length() >= 6) {
-                    if (currentString.length() > 6) {
-                        phoneNumberString = beginning + currentString.substring(3,6) + appendage + currentString.substring(6);
-                    } else {
-                        phoneNumberString = beginning + currentString.substring(3);
-                    }
-                } else {
-                    phoneNumberString = beginning + currentString.substring(3);
+                beginning = "(" + currentString.substring(0, 3) + ") ";
+                phoneNumberString = beginning + currentString.substring(3);
+                if (currentString.length() > 6) {
+                    phoneNumberString = beginning + currentString.substring(3, 6) + "-" + currentString.substring(6);
                 }
             }
         }
@@ -330,7 +326,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     ISBNString = currentString;
                     if (currentString.length() > 3) {
                         first = currentString.substring(0, 3) + appendage;
-                        ISBNString = first  + currentString.substring(3);
+                        ISBNString = first + currentString.substring(3);
                         if (currentString.length() > 4) {
                             second = first + currentString.substring(3, 4) + appendage;
                             ISBNString = second + currentString.substring(4);
@@ -352,7 +348,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     ISBNString = currentString;
                     if (currentString.length() > 1) {
                         first = currentString.substring(0, 1) + appendage;
-                        ISBNString = first  + currentString.substring(1);
+                        ISBNString = first + currentString.substring(1);
                         if (currentString.length() > 3) {
                             second = first + currentString.substring(1, 3) + appendage;
                             ISBNString = second + currentString.substring(3);
@@ -402,12 +398,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         productSupplierName = productSupplierNameEditText.getText().toString().trim();
         productSupplierPhone = extractNumberFromFormat(productSupplierPhoneNumberEditText.getText().toString().trim());
         String priceString = productPriceEditText.getText().toString().trim();
-        productPrice = compilePriceString(priceString);
+        productPrice = Double.parseDouble(parsePrice(priceString));
         String quantityString = productQuantityEditText.getText().toString().trim();
         productQuantity = Integer.parseInt(compileQuantityString(quantityString));
         String isbn13 = productISBN13EditText.getText().toString().trim();
         String isbn10 = productISBN10EditText.getText().toString().trim();
-        createToast("ISBN 13: " + isbn13);
         if (!isEmpty(isbn13)) {
             productISBN13 = String.valueOf(extractNumberFromFormat(isbn13));
         } else {
@@ -420,6 +415,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
     }
 
+    private String parsePrice(String priceString) {
+        /*
+        Thanks to kshetline for this code snippet inspiration:
+        https://stackoverflow.com/questions/49741511/convert-multiple-point-number-to-a-single-point-double
+        */
+        String ending = "";
+        int lastDot = priceString.lastIndexOf('.');
+        if (lastDot >= 0) {
+            ending = priceString.substring(lastDot);
+            priceString = priceString.substring(0, lastDot).replaceAll("\\.", "");
+        }
+        return priceString + ending;
+    }
+
     private String extractNumberFromFormat(String value) {
         String currentString = value;
         currentString = currentString.replace("-", "");
@@ -427,15 +436,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         currentString = currentString.replace(")", "");
         currentString = currentString.replace(" ", "");
         return currentString;
-    }
-
-    private double compilePriceString(String price) {
-        DecimalFormat format = new DecimalFormat("0.00");
-        if (!isEmpty(price)) {
-            return Double.valueOf(format.format(Double.parseDouble(price)));
-        } else {
-            return Double.valueOf(format.format(zero));
-        }
     }
 
     private String compileQuantityString(String quantity) {
@@ -449,7 +449,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (isSanityCheckGood()) {
             implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_NAME, productName);
             implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_AUTHOR, productAuthor);
-            createToast("initImplement: " + productISBN13);
             implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_13, productISBN13);
             implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_10, productISBN10);
             implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_NAME, productSupplierName);
@@ -601,7 +600,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public void onLoaderReset(Loader<Cursor> loader) {
         clearInputFields();
     }
-
 
 
     @Override

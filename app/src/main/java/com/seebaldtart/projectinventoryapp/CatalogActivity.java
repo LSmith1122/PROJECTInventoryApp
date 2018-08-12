@@ -17,28 +17,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
 import com.seebaldtart.projectinventoryapp.data.ProductCursorAdapter;
-import com.seebaldtart.projectinventoryapp.data.ProductDBHelper;
 
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private final int zero = 0;
     private final int ASYNC_LOADER_ID = 0;
     private final int CURSOR_LOADER_ID = 1;
     private ListView listView;
-    private TextView emptyText;
+    private LinearLayout emptyGroup;
+    private LinearLayout loadingGroup;
     private CursorAdapter cursorAdapter;
-    private ProductDBHelper mDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
-        mDBHelper = new ProductDBHelper(this);
+        setTitle(R.string.catalog_label_books);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,11 +46,12 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             }
         });
         listView = (ListView) findViewById(R.id.list);
-        emptyText = (TextView) findViewById(R.id.empty_view);
-        emptyText.setText(getResources().getString(R.string.display_text_empty));
+        emptyGroup = (LinearLayout) findViewById(R.id.empty_view);
+        loadingGroup = (LinearLayout) findViewById(R.id.loading_group);
         cursorAdapter = new ProductCursorAdapter(this, null);
+        emptyGroup.setVisibility(View.GONE);
         listView.setAdapter(cursorAdapter);
-        listView.setEmptyView(emptyText);
+        listView.setEmptyView(loadingGroup);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -129,7 +129,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                         BookEntry.COLUMN_PRODUCT_QUANTITY};
                 return new CursorLoader(this, BookEntry.CONTENT_URI, projection, null, null, null);
             case ASYNC_LOADER_ID:
-                // TODO: Return null unless if planning to create an ASYNCTask, preferably for JSON Operations
+                // Return null unless if planning to create an ASYNCTask, preferably for JSON Operations
+                // If planning to create ASYNCTask, write code that does something...
                 return null;
             default:
                 return null;
@@ -139,6 +140,10 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         cursorAdapter.swapCursor(cursor);
+        if (cursor == null) {
+            loadingGroup.setVisibility(View.GONE);
+            listView.setEmptyView(emptyGroup);
+        }
     }
 
     @Override
