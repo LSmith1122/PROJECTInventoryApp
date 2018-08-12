@@ -3,8 +3,6 @@ package com.seebaldtart.projectinventoryapp;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,8 +24,6 @@ import android.widget.Toast;
 
 import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
 import com.seebaldtart.projectinventoryapp.data.ProductCursorAdapter;
-
-import java.util.ArrayList;
 
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private final int zero = 0;
@@ -53,26 +49,49 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             }
         });
         setupViews();
+        setupListViewListeners();
+        LoaderManager loaderManager = getLoaderManager();
+        loaderManager.initLoader(CURSOR_LOADER_ID, null, this).forceLoad();
+    }
+
+    private void setupListViewListeners() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("TEST", "onClick working...");
                 mSelectedURI = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
                 if (mCursor != null) {
                     switch (view.getId()) {
                         case R.id.parent_view_group:
-                            Log.i("TEST", "Current ID: " + id);
                             startEditorActivity(mSelectedURI);
                             break;
                         default:
                             Log.i("TEST", "Unknown ListView item...");
+                            createToast("Error");
                             break;
                     }
                 }
             }
         });
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(CURSOR_LOADER_ID, null, this).forceLoad();
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, final long id) {
+                Log.i("TEST", "Long Clicked item with ID: " + id);
+                DialogInterface.OnClickListener deleteButtonClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Uri selectedURI = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
+                        int deleteRows = getContentResolver().delete(selectedURI, null, null);
+                        if (deleteRows > zero) {
+                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.successful_data_deletion_selected), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.unsuccessful_data_deletion) + ", deleted " + deleteRows + " rows", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                };
+                deleteProductDialog(deleteButtonClickListener);
+                return true;
+            }
+        });
     }
 
     private void setupViews() {
@@ -120,6 +139,21 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         return super.onOptionsItemSelected(item);
     }
 
+    private void deleteProductDialog(DialogInterface.OnClickListener deleteProductDialogButtonClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_selected_product_dialog);
+        builder.setPositiveButton(R.string.delete_selected_product, deleteProductDialogButtonClickListener);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     private void deleteAllProductsDialog(DialogInterface.OnClickListener deleteButtonClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_all_product_dialog);
@@ -165,9 +199,13 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         cursorAdapter.swapCursor(cursor);
         mCursor = cursor;
         Log.i("TEST", "onLoadFinished...");
-        if (cursor == null) {
-            loadingGroup.setVisibility(View.GONE);
+        if (cursor.getCount() == zero) {
+            Log.i("TEST", "Cursor is empty");
             listView.setEmptyView(emptyGroup);
+            loadingGroup.setVisibility(View.GONE);
+        } else {
+            listView.setEmptyView(loadingGroup);
+            emptyGroup.setVisibility(View.GONE);
         }
     }
 

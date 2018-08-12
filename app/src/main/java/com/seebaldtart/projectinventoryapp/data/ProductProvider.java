@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.seebaldtart.projectinventoryapp.R;
@@ -47,14 +46,11 @@ public class ProductProvider extends ContentProvider {
         Cursor cursor = null;
         try {
             SQLiteDatabase db = mDBHelper.getReadableDatabase();
-            Log.i("TEST", "URI: " + uri);
             switch (sUriMatcher.match(uri)) {
                 case PRODUCTS:
-                    Log.i("TEST", "match: " + sUriMatcher.match(uri));
                     cursor = db.query(BookEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                     break;
                 case PRODUCTS_ID:
-                    Log.i("TEST", "match: " + sUriMatcher.match(uri));
                     selection = BookEntry._ID + "=?";
                     selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                     cursor = db.query(BookEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
@@ -81,7 +77,6 @@ public class ProductProvider extends ContentProvider {
             case PRODUCTS:
                 return insertProduct(uri, values);
             default:
-//                throw new IllegalArgumentException("Error inserting new product - URI: " + uri + ", ContentValues size: " + values.size() + ", " + values.valueSet());
                 Toast.makeText(context, "Error inserting new product\nMatch #: " + match, Toast.LENGTH_SHORT).show();
                 return null;
         }
@@ -116,7 +111,7 @@ public class ProductProvider extends ContentProvider {
         contentValues.put(BookEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
         long newRowID = db.insert(BookEntry.TABLE_NAME, null, contentValues);
         if (newRowID != BAD_ID) {
-            Toast.makeText(context, context.getResources().getString(R.string.successful_data_saved) + " new row ID: " + newRowID, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getResources().getString(R.string.successful_data_saved), Toast.LENGTH_SHORT).show();
             context.getContentResolver().notifyChange(uri, null);
             return ContentUris.withAppendedId(uri, newRowID);
         } else {
@@ -153,7 +148,7 @@ public class ProductProvider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return deleteProduct(uri, selection, selectionArgs);
             default:
-                throw new IllegalArgumentException("Invalid uri for deletion...");
+                throw new IllegalArgumentException(context.getResources().getString(R.string.invalid_uri_for_deletion));
         }
     }
 
@@ -173,7 +168,7 @@ public class ProductProvider extends ContentProvider {
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateProduct(uri, userInputValues, selection, selectionArgs);
             default:
-                throw new IllegalArgumentException("Invalid uri for update...");
+                throw new IllegalArgumentException(context.getResources().getString(R.string.invalid_uri_for_update));
         }
     }
 
@@ -181,7 +176,6 @@ public class ProductProvider extends ContentProvider {
         int newRowID = BAD_ID;
         ContentValues newValues = new ContentValues();
         if (userInputValues.size() == zero) {
-            Log.i("TEST", "Values equal 0 in updateProduct()");
             return zero;
         } else {
             SQLiteDatabase db = mDBHelper.getWritableDatabase();

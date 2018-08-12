@@ -73,4 +73,6 @@
     <string name="illegal_argument_exception_require_isbn">Product requires an valid ISBN#</string>
     <string name="illegal_argument_exception_unsuccesful_save">Error saving or updating product data</string>
     <string name="price_monetary_symbol">$</string>
+    <string name="invalid_uri_for_update">Invalid uri for update</string>
+    <string name="invalid_uri_for_deletion">Invalid uri for deletion</string>
 </resources>

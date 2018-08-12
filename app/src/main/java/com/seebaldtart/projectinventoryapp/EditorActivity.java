@@ -78,6 +78,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             loaderManager.initLoader(CURSOR_LOADER_ID, null, this);
         } else {
             descriptionText.setText(context.getResources().getString(R.string.editor_add_description));
+            productPriceEditText.setText(createTextForPrice(zero));
             productQuantityEditText.setText(String.valueOf(zero));
             initButtonOnClickListeners();
         }
@@ -129,7 +130,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private int getQuantityValue() {
-        return Integer.parseInt(productQuantityEditText.getText().toString());
+        String value = productQuantityEditText.getText().toString();
+        if (!TextUtils.isEmpty(value)) {
+            return Integer.parseInt(value);
+        } else {
+            return zero;
+        }
     }
 
     private double getPriceValue() {
@@ -319,6 +325,62 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             }
         });
+        productPriceEditText.addTextChangedListener(new TextWatcher() {
+            int mSwitch = 0;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = productPriceEditText.length();
+                if (mSwitch == 1) {
+                    if (length == 0) {
+                        productPriceEditText.removeTextChangedListener(this);
+                        productPriceEditText.setText(createTextForPrice(zero));
+                        productPriceEditText.setSelection(productPriceEditText.getText().length());
+                        productPriceEditText.addTextChangedListener(this);
+                    }
+                } else {
+                    mSwitch++;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        productQuantityEditText.addTextChangedListener(new TextWatcher() {
+            int mSwitch = 0;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = productQuantityEditText.length();
+                if (mSwitch == 1) {
+                    if (length == 0) {
+                        productQuantityEditText.removeTextChangedListener(this);
+                        productQuantityEditText.setText(String.valueOf(zero));
+                        productQuantityEditText.setSelection(productQuantityEditText.getText().length());
+                        productQuantityEditText.addTextChangedListener(this);
+                    }
+                } else {
+                    mSwitch++;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void compileSupplierPhoneNumber(String value) {
@@ -389,7 +451,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             default:
                 break;
         }
-        Log.i(LOG_TAG, "Initial compileISBN: " + value + " compileISBN: " + ISBNString);
         return ISBNString;
     }
 
@@ -480,7 +541,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_NAME, productSupplierName);
             implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, productSupplierPhone);
             implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_PRICE, productPrice);
-            Log.i(LOG_TAG, "Product Price: " + productPrice);
             implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
         }
     }

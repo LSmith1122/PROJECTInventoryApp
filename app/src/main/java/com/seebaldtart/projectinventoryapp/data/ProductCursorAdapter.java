@@ -12,11 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.seebaldtart.projectinventoryapp.EditorActivity;
 import com.seebaldtart.projectinventoryapp.R;
 import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
 
@@ -24,9 +22,11 @@ import java.text.DecimalFormat;
 
 public class ProductCursorAdapter extends CursorAdapter {
     final int zero = 0;
+
     public ProductCursorAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
     }
+
     private Context mContext;
 
     @Override
