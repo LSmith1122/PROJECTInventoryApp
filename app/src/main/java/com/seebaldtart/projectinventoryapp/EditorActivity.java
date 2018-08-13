@@ -2,6 +2,7 @@ package com.seebaldtart.projectinventoryapp;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -48,19 +50,40 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private ImageButton productQuantityButtonDecrement;
     private ImageButton priceQuantityButtonIncrement;
     private ImageButton priceQuantityButtonDecrement;
+    private Button orderButton;
     private FloatingActionButton saveButton;
     private FloatingActionButton cancelButton;
     private boolean mHasBeenTouched = false;
     private Uri mSelectedURI = null;
     private Context context;
-    private String productName;
-    private String productAuthor;
-    private String productISBN13;
-    private String productISBN10;
-    private String productSupplierName;
-    private String productSupplierPhone;
-    private double productPrice;
-    private int productQuantity;
+
+    /*
+    Initial variables for the selected item
+    */
+    private String initName;
+    private String initAuthor;
+    private String initISBN13;
+    private String initISBN10;
+    private String initSupplierName;
+    private String initSupplierPhone;
+    private Double initPrice;
+    private int initQuantity;
+
+    /*
+    Variables used for updating selected item (User Input)
+    */
+    private String userProductName;
+    private String userProductAuthor;
+    private String userProductISBN13;
+    private String userProductISBN10;
+    private String userProductSupplierName;
+    private String userProductSupplierPhone;
+    private double userProductPrice;
+    private int userProductQuantity;
+
+    /*
+    Variables used solely for keeping track of User Input and updating EditTexts only
+    */
     private int mCurrentQuantity;
     private double mCurrentPrice;
 
@@ -164,22 +187,24 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 int supplierPhoneColumnIndex = cursor.getColumnIndexOrThrow(BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER);
                 int priceColumnIndex = cursor.getColumnIndexOrThrow(BookEntry.COLUMN_PRODUCT_PRICE);
                 int quantityColumnIndex = cursor.getColumnIndexOrThrow(BookEntry.COLUMN_PRODUCT_QUANTITY);
-                String name = cursor.getString(nameColumnIndex);
-                String author = cursor.getString(authorColumnIndex);
-                String isbn13 = cursor.getString(isbn13ColumnIndex);
-                String isbn10 = cursor.getString(isbn10ColumnIndex);
-                String supplierName = cursor.getString(supplierNameColumnIndex);
-                String supplierPhone = cursor.getString(supplierPhoneColumnIndex);
-                mCurrentPrice = cursor.getDouble(priceColumnIndex);
-                mCurrentQuantity = cursor.getInt(quantityColumnIndex);
-                productNameEditText.setText(name);
-                productAuthorEditText.setText(author);
-                productISBN13EditText.setText(compileISBNNumber(isbn13, BookEntry.MAX_ISBN_13));
-                productISBN10EditText.setText(compileISBNNumber(isbn10, BookEntry.MAX_ISBN_10));
-                productSupplierNameEditText.setText(supplierName);
-                compileSupplierPhoneNumber(supplierPhone);
-                productPriceEditText.setText(createTextForPrice(mCurrentPrice));
-                productQuantityEditText.setText(String.valueOf(mCurrentQuantity));
+                initName = cursor.getString(nameColumnIndex);
+                initAuthor = cursor.getString(authorColumnIndex);
+                initISBN13 = cursor.getString(isbn13ColumnIndex);
+                initISBN10 = cursor.getString(isbn10ColumnIndex);
+                initSupplierName = cursor.getString(supplierNameColumnIndex);
+                initSupplierPhone = cursor.getString(supplierPhoneColumnIndex);
+                initPrice = cursor.getDouble(priceColumnIndex);
+                mCurrentPrice = initPrice;
+                initQuantity = cursor.getInt(quantityColumnIndex);
+                mCurrentQuantity = initQuantity;
+                productNameEditText.setText(initName);
+                productAuthorEditText.setText(initAuthor);
+                productISBN13EditText.setText(compileISBNNumber(initISBN13, BookEntry.MAX_ISBN_13));
+                productISBN10EditText.setText(compileISBNNumber(initISBN10, BookEntry.MAX_ISBN_10));
+                productSupplierNameEditText.setText(initSupplierName);
+                compileSupplierPhoneNumber(initSupplierPhone);
+                productPriceEditText.setText(createTextForPrice(initPrice));
+                productQuantityEditText.setText(String.valueOf(initQuantity));
             } catch (NullPointerException e) {
                 Log.e(LOG_TAG, "Error updating UI", e);
             }
@@ -211,7 +236,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         priceQuantityButtonDecrement = findViewById(R.id.product_price_decrement_button);
         saveButton = findViewById(R.id.save_product_button);
         cancelButton = findViewById(R.id.cancel_button);
-        ;
+        orderButton = (Button) findViewById(R.id.order_button);
         setupViewOnClickListeners();
     }
 
@@ -224,6 +249,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         initViewOnClickListeners(productSupplierNameEditText);
         initViewOnClickListeners(productSupplierPhoneNumberEditText);
         initViewOnClickListeners(productPriceEditText);
+        if (mSelectedURI == null) {
+            orderButton.setVisibility(View.GONE);
+        } else {
+            orderButton.setVisibility(View.VISIBLE);
+        }
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -384,16 +414,42 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void compileSupplierPhoneNumber(String value) {
+        String emptySpace = " ";
+        String country = "+";
+        String startAreaCode = "(";
+        String endAreaCode = ")";
+        String dash = "-";
         String currentString = value;
         currentString = extractNumberFromFormat(currentString);
         String beginning, phoneNumberString = "";
         if (!TextUtils.isEmpty(currentString)) {
             phoneNumberString = currentString;
             if (currentString.length() > 3) {
-                beginning = "(" + currentString.substring(0, 3) + ") ";
+                beginning = startAreaCode + currentString.substring(0, 3) + endAreaCode + emptySpace;
                 phoneNumberString = beginning + currentString.substring(3);
                 if (currentString.length() > 6) {
-                    phoneNumberString = beginning + currentString.substring(3, 6) + "-" + currentString.substring(6);
+                    phoneNumberString = beginning + currentString.substring(3, 6) + dash + currentString.substring(6);
+                    if (currentString.length() > 10) {
+                        phoneNumberString = country + currentString.substring(0,1) + emptySpace
+                                + startAreaCode + currentString.substring(1, 4) + endAreaCode + emptySpace
+                                + currentString.substring(4,7)
+                                + dash
+                                + currentString.substring(7);
+                        if (currentString.length() > 11) {
+                            phoneNumberString = country + currentString.substring(0,2) + emptySpace
+                                    + startAreaCode + currentString.substring(2, 5) + endAreaCode + emptySpace
+                                    + currentString.substring(5,8)
+                                    + dash
+                                    + currentString.substring(8);
+                            if (currentString.length() > 12) {
+                                phoneNumberString = country + currentString.substring(0,3) + emptySpace
+                                        + startAreaCode + currentString.substring(3, 6) + endAreaCode + emptySpace
+                                        + currentString.substring(6,9)
+                                        + dash
+                                        + currentString.substring(9);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -480,25 +536,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void recordUserInput() {
-        productName = productNameEditText.getText().toString().trim();
-        productAuthor = productAuthorEditText.getText().toString().trim();
-        productSupplierName = productSupplierNameEditText.getText().toString().trim();
-        productSupplierPhone = extractNumberFromFormat(productSupplierPhoneNumberEditText.getText().toString().trim());
-        String priceString = productPriceEditText.getText().toString().trim();
-        productPrice = Double.parseDouble(parsePrice(priceString));
-        String quantityString = productQuantityEditText.getText().toString().trim();
-        productQuantity = Integer.parseInt(compileQuantityString(quantityString));
+        userProductName = productNameEditText.getText().toString().trim();
+        userProductAuthor = productAuthorEditText.getText().toString().trim();
+        userProductSupplierName = productSupplierNameEditText.getText().toString().trim();
+        userProductSupplierPhone = extractNumberFromFormat(productSupplierPhoneNumberEditText.getText().toString().trim());
+        userProductPrice = Double.parseDouble(parsePrice(productPriceEditText.getText().toString().trim()));
+        userProductQuantity = Integer.parseInt(compileQuantityString(productQuantityEditText.getText().toString().trim()));
         String isbn13 = productISBN13EditText.getText().toString().trim();
         String isbn10 = productISBN10EditText.getText().toString().trim();
         if (!isEmpty(isbn13)) {
-            productISBN13 = String.valueOf(extractNumberFromFormat(isbn13));
+            userProductISBN13 = String.valueOf(extractNumberFromFormat(isbn13));
         } else {
-            productISBN13 = String.valueOf(zero);
+            userProductISBN13 = String.valueOf(zero);
         }
         if (!isEmpty(isbn10)) {
-            productISBN10 = String.valueOf(extractNumberFromFormat(isbn10));
+            userProductISBN10 = String.valueOf(extractNumberFromFormat(isbn10));
         } else {
-            productISBN10 = String.valueOf(zero);
+            userProductISBN10 = String.valueOf(zero);
         }
     }
 
@@ -518,6 +572,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     private String extractNumberFromFormat(String value) {
         String currentString = value;
+        currentString = currentString.replace("+", "");
         currentString = currentString.replace("-", "");
         currentString = currentString.replace("(", "");
         currentString = currentString.replace(")", "");
@@ -533,23 +588,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void initImplementContentValues(ContentValues userInputValues) {
-        if (isSanityCheckGood()) {
-            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_NAME, productName);
-            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_AUTHOR, productAuthor);
-            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_13, productISBN13);
-            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_10, productISBN10);
-            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_NAME, productSupplierName);
-            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, productSupplierPhone);
-            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_PRICE, productPrice);
-            implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
-        }
-    }
-
-    private boolean isSanityCheckGood() {
-//        if (!isEmpty(productName)
-//                && !isEmpty(productAuthor)
-//                && )
-        return true;
+        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_NAME, userProductName);
+        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_AUTHOR, userProductAuthor);
+        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_13, userProductISBN13);
+        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_10, userProductISBN10);
+        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_NAME, userProductSupplierName);
+        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, userProductSupplierPhone);
+        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_PRICE, userProductPrice);
+        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_QUANTITY, userProductQuantity);
     }
 
     private void implementContentValues(ContentValues contentValues, String key, Object userInput) {
@@ -672,10 +718,24 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
         if (cursor != null && mSelectedURI != null) {
+            orderButton.setVisibility(View.VISIBLE);
+            orderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (initQuantity > 0) {
+                        updateQuantity(context, initQuantity, ContentUris.parseId(mSelectedURI));           // Decrease quantity in database
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + initSupplierPhone));
+                        context.startActivity(intent);
+                    } else {                        // Quantity is too low, notify User
+                        createToast(context.getResources().getString(R.string.no_products_in_inventory) + "\nwith quantity of " + initQuantity);
+                    }
+                }
+            });
             updateUI(cursor);
         } else {
+            orderButton.setVisibility(View.GONE);
             mCurrentQuantity = 0;
             productQuantityEditText.setText(String.valueOf(mCurrentQuantity));
             mCurrentPrice = 0;
@@ -689,6 +749,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         clearInputFields();
     }
 
+    private void updateQuantity(Context context, int currentQuantity, long id) {
+        int newQuantity = currentQuantity - 1;
+        ContentValues values = new ContentValues();
+        values.put(BookEntry.COLUMN_PRODUCT_QUANTITY, newQuantity);
+        Uri mSelectedURI = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
+        int updatedRowID = context.getContentResolver().update(mSelectedURI, values, null, null);
+        if (updatedRowID > zero) {
+            createToast(context.getResources().getString(R.string.successful_product_sale));
+        } else {
+            createToast(context.getResources().getString(R.string.unsuccessful_product_sale_update));
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

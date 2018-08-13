@@ -36,6 +36,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     private Uri mSelectedURI;
     private Cursor mCursor;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,7 +199,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
         cursorAdapter.swapCursor(cursor);
         mCursor = cursor;
-        Log.i("TEST", "onLoadFinished...");
         if (cursor.getCount() == zero) {
             Log.i("TEST", "Cursor is empty");
             listView.setEmptyView(emptyGroup);
