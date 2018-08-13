@@ -32,8 +32,6 @@
     <string name="hint_cancel_product_button">Cancel</string>
     <string name="display_text_empty">There are no products in the inventory to display at this time.\n\nAdd products to the database list by tapping the \"+\" Button.</string>
     <string name="display_text_loading">Loading.\n\nPlease wait for inventory data to update.</string>
-    <string name="current_inventory_size">Current Inventory Size:</string>
-    <string name="table_details">Table Details:</string>
     <string name="unknown_entry">[unknown]</string>
     <string name="id_string">ID:</string>
     <string name="allowed_characters_for_text">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890.:!,-</string>
@@ -65,6 +63,7 @@
     <string name="unsuccessful_product_sale_update">Error updating sale of product&#8230;</string>
     <string name="error_querying_database">Error querying database</string>
     <string name="error_input_provide_attributes">Error compiling valid input for attributes into ContentValues</string>
+    <string name="update_provide_attributes">Please fill in all required attributes</string>
     <string name="illegal_argument_exception_invalid_uri">Illegal URI</string>
     <string name="illegal_argument_exception_require_name">Product requires a valid name</string>
     <string name="illegal_argument_exception_require_price">Product requires a valid price</string>

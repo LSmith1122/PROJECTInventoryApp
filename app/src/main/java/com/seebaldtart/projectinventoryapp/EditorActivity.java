@@ -33,7 +33,6 @@ import com.seebaldtart.projectinventoryapp.data.InventoryContract.BookEntry;
 import java.text.DecimalFormat;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private final int INVALID = -1;
     private final int zero = 0;
     private final int CURSOR_LOADER_ID = 1;
     private String LOG_TAG;
@@ -86,6 +85,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     */
     private int mCurrentQuantity;
     private double mCurrentPrice;
+    private int maxCVAmount = 0;
+    private int actualCVAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -527,11 +528,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private void saveUserInput() {
         ContentValues userInputValues = new ContentValues();
         recordUserInput();
-        initImplementContentValues(userInputValues);
-        if (mSelectedURI != null) {             // User has selected a specific product to update...
-            updateProduct(mSelectedURI, userInputValues);
-        } else {                                // User is adding a new product...
-            insertProduct(BookEntry.CONTENT_URI, userInputValues);
+        if (initImplementContentValues(userInputValues)) {
+            if (mSelectedURI != null) {             // User has selected a specific product to update...
+                updateProduct(mSelectedURI, userInputValues);
+            } else {                                // User is adding a new product...
+                insertProduct(BookEntry.CONTENT_URI, userInputValues);
+            }
+        } else {
+            createToast(context.getResources().getString(R.string.update_provide_attributes));
         }
     }
 
@@ -542,15 +546,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         userProductSupplierPhone = extractNumberFromFormat(productSupplierPhoneNumberEditText.getText().toString().trim());
         userProductPrice = Double.parseDouble(parsePrice(productPriceEditText.getText().toString().trim()));
         userProductQuantity = Integer.parseInt(compileQuantityString(productQuantityEditText.getText().toString().trim()));
-        String isbn13 = productISBN13EditText.getText().toString().trim();
-        String isbn10 = productISBN10EditText.getText().toString().trim();
-        if (!isEmpty(isbn13)) {
-            userProductISBN13 = String.valueOf(extractNumberFromFormat(isbn13));
+        userProductISBN13 = productISBN13EditText.getText().toString().trim();
+        userProductISBN10 = productISBN10EditText.getText().toString().trim();
+        if (!isEmpty(userProductISBN13)) {
+            userProductISBN13 = String.valueOf(extractNumberFromFormat(userProductISBN13));
         } else {
             userProductISBN13 = String.valueOf(zero);
         }
-        if (!isEmpty(isbn10)) {
-            userProductISBN10 = String.valueOf(extractNumberFromFormat(isbn10));
+        if (!isEmpty(userProductISBN10)) {
+            userProductISBN10 = String.valueOf(extractNumberFromFormat(userProductISBN10));
         } else {
             userProductISBN10 = String.valueOf(zero);
         }
@@ -587,31 +591,64 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         return quantity;
     }
 
-    private void initImplementContentValues(ContentValues userInputValues) {
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_NAME, userProductName);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_AUTHOR, userProductAuthor);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_13, userProductISBN13);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_10, userProductISBN10);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_NAME, userProductSupplierName);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, userProductSupplierPhone);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_PRICE, userProductPrice);
-        implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_QUANTITY, userProductQuantity);
+    private boolean initImplementContentValues(ContentValues userInputValues) {
+        maxCVAmount = 0;
+        actualCVAmount = 0;
+        actualCVAmount = actualCVAmount + implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_NAME, userProductName, true);
+        actualCVAmount = actualCVAmount + implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_AUTHOR, userProductAuthor, true);
+        actualCVAmount = actualCVAmount + implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_13, userProductISBN13, false);
+        actualCVAmount = actualCVAmount + implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_ISBN_10, userProductISBN10, false);
+        actualCVAmount = actualCVAmount + implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_NAME, userProductSupplierName, true);
+        actualCVAmount = actualCVAmount + implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, userProductSupplierPhone, true);
+        actualCVAmount = actualCVAmount + implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_PRICE, userProductPrice, true);
+        actualCVAmount = actualCVAmount + implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_QUANTITY, userProductQuantity, true);
+        if (actualCVAmount >= maxCVAmount) {         // continue operation...
+            return true;
+        } else {            // halt operation and notify user to fill in all entries
+            return false;
+        }
     }
 
-    private void implementContentValues(ContentValues contentValues, String key, Object userInput) {
+    private int implementContentValues(ContentValues contentValues, String key, Object userInput, boolean required) {
+        maxCVAmount++;
+        int mPass = 1;
+        int mFail = 0;
+        if (required) {
+            if (checkContentValuesStatus(contentValues, key, userInput)) {               // if it's required AND not empty... pass with 1
+                return mPass;
+            } else {                                        // if it's required, but empty... fail with 0
+                return mFail;
+            }
+        } else {                                            // automatically pass with 1
+            checkContentValuesStatus(contentValues, key, userInput);
+            return mPass;
+        }
+    }
+
+    private boolean checkContentValuesStatus(ContentValues contentValues, String key, Object userInput) {
         if (userInput instanceof String) {
             if (!TextUtils.isEmpty((String) userInput)) {
                 contentValues.put(key, (String) userInput);
+                return true;
+            } else {
+                return false;
             }
         } else if (userInput instanceof Integer) {
             if ((Integer) userInput >= 0) {
                 contentValues.put(key, (Integer) userInput);
+                return true;
+            } else {
+                return false;
             }
         } else if (userInput instanceof Double) {
             if ((Double) userInput >= 0) {
                 contentValues.put(key, (Double) userInput);
+                return true;
+            } else {
+                return false;
             }
         }
+        return false;
     }
 
     private void updateProduct(Uri uri, ContentValues userValues) {
