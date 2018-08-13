@@ -69,25 +69,22 @@ public class ProductCursorAdapter extends CursorAdapter {
                     final int quantity = currentQuantity;
                     final String phone = supplierPhone;
                     Log.i("TEST", "Current ID: " + id + " and Current Quantity: " + quantity);
-                    initSale(cursor, id, quantity, phone);
+                    initSale(id, quantity, phone);
                 }
             });
         }
     }
 
-    private void initSale(Cursor cursor, long id, int currentQuantity, String supplierPhone) {
+    private void initSale(long id, int currentQuantity, String supplierPhone) {
         if (currentQuantity > 0) {
             updateQuantity(mContext, currentQuantity, id);           // Decrease quantity in database
-            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + supplierPhone));
-            mContext.startActivity(intent);
         } else {                        // Quantity is too low, notify User
-            createToast(mContext.getResources().getString(R.string.no_products_in_inventory) + "\nwith quantity of " + currentQuantity);
+            createToast(mContext.getResources().getString(R.string.no_products_in_inventory));
         }
     }
 
     private void updateQuantity(Context context, int currentQuantity, long id) {
-        int quantity = currentQuantity;
-        int newQuantity = quantity - 1;
+        int newQuantity = currentQuantity - 1;
         ContentValues values = new ContentValues();
         values.put(BookEntry.COLUMN_PRODUCT_QUANTITY, newQuantity);
         Uri mSelectedURI = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
