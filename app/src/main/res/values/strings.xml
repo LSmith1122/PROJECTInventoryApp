@@ -22,7 +22,7 @@
     <string name="isbn_13">ISBN 13:</string>
     <string name="quantity_in_stock">left in stock</string>
     <string name="editor_add_description">Add Product to Inventory.</string>
-    <string name="editor_update_description" translatable="true">Fill in the attributes below to edit the selected product\'s existing data.</string>
+    <string name="editor_update_description" translatable="true">Fill in the attributes below to edit the selected product\'s existing data or contact Supplier to place an order.</string>
     <string name="hint_save_product_button">Add Product</string>
     <string name="menu_add_product">Add Product</string>
     <string name="menu_edit_product">Edit Product</string>
@@ -77,4 +77,5 @@
     <string name="spacer_view_group_bottom">100dp</string>
     <string name="hint_product_price_multiple_edit_text">10</string>
     <string name="hint_product_price_multiple_text_view">Multiple of</string>
+    <string name="order">Order</string>
 </resources>

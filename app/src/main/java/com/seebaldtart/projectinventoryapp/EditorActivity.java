@@ -45,6 +45,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText productSupplierPhoneNumberEditText;
     private EditText productPriceEditText;
     private EditText productQuantityEditText;
+    private EditText multiplePriceEditText;
+    private EditText multipleQuantityEditText;
     private ImageButton productQuantityButtonIncrement;
     private ImageButton productQuantityButtonDecrement;
     private ImageButton priceQuantityButtonIncrement;
@@ -87,6 +89,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private double mCurrentPrice;
     private int maxCVAmount = 0;
     private int actualCVAmount;
+    private final int minMultiple = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,11 +112,47 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void initButtonOnClickListeners() {
+        multipleQuantityEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.isEmpty(multipleQuantityEditText.getText())) {
+                    multipleQuantityEditText.setText(String.valueOf(minMultiple));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        multiplePriceEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.isEmpty(multiplePriceEditText.getText())) {
+                    multiplePriceEditText.setText(String.valueOf(minMultiple));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         productQuantityButtonIncrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCurrentQuantity = getQuantityValue();
-                mCurrentQuantity++;
+                mCurrentQuantity = mCurrentQuantity + Integer.valueOf(multipleQuantityEditText.getText().toString());
                 productQuantityEditText.setText(String.valueOf(mCurrentQuantity));
                 productQuantityEditText.setSelection(productQuantityEditText.getText().length());
             }
@@ -122,7 +161,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View v) {
                 mCurrentQuantity = getQuantityValue();
-                mCurrentQuantity--;
+                mCurrentQuantity = mCurrentQuantity - Integer.valueOf(multipleQuantityEditText.getText().toString());
                 if (mCurrentQuantity < 0) {
                     mCurrentQuantity = 0;
                 }
@@ -134,7 +173,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View v) {
                 mCurrentPrice = getPriceValue();
-                mCurrentPrice = mCurrentPrice + 10;
+                mCurrentPrice = mCurrentPrice + Integer.valueOf(multiplePriceEditText.getText().toString());
                 productPriceEditText.setText(createTextForPrice(mCurrentPrice));
                 productPriceEditText.setSelection(productPriceEditText.getText().length());
             }
@@ -143,7 +182,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View v) {
                 mCurrentPrice = getPriceValue();
-                mCurrentPrice = mCurrentPrice - 10;
+                mCurrentPrice = mCurrentPrice - Integer.valueOf(multiplePriceEditText.getText().toString());
                 if (mCurrentPrice < 0) {
                     mCurrentPrice = 0;
                 }
@@ -237,7 +276,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         priceQuantityButtonDecrement = findViewById(R.id.product_price_decrement_button);
         saveButton = findViewById(R.id.save_product_button);
         cancelButton = findViewById(R.id.cancel_button);
-        orderButton = (Button) findViewById(R.id.order_button);
+        orderButton = findViewById(R.id.order_button);
+        final int initMultiple = 10;
+        multiplePriceEditText = findViewById(R.id.product_price_multiple_edit_text);
+        multipleQuantityEditText = findViewById(R.id.product_quantity_multiple_edit_text);
+        multipleQuantityEditText.setText(String.valueOf(initMultiple));
+        multiplePriceEditText.setText(String.valueOf(initMultiple));
         setupViewOnClickListeners();
     }
 
@@ -274,7 +318,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
         productSupplierPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
-            int mSwitch = 0;
+            int mSwitch = zero;
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -285,7 +329,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int length = productSupplierPhoneNumberEditText.length();
                 if (mSwitch == 1) {
-                    if (length > 0) {
+                    if (length > zero) {
                         productSupplierPhoneNumberEditText.removeTextChangedListener(this);
                         compileSupplierPhoneNumber(productSupplierPhoneNumberEditText.getText().toString().trim());
                         productSupplierPhoneNumberEditText.addTextChangedListener(this);
@@ -301,7 +345,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
         productISBN13EditText.addTextChangedListener(new TextWatcher() {
-            int mSwitch = 0;
+            int mSwitch = zero;
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -312,7 +356,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int length = productISBN13EditText.length();
                 if (mSwitch == 1) {
-                    if (length > 0) {
+                    if (length > zero) {
                         productISBN13EditText.removeTextChangedListener(this);
                         productISBN13EditText.setText(compileISBNNumber(productISBN13EditText.getText().toString().trim(), BookEntry.MAX_ISBN_13));
                         productISBN13EditText.setSelection(productISBN13EditText.getText().length());
@@ -329,7 +373,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
         productISBN10EditText.addTextChangedListener(new TextWatcher() {
-            int mSwitch = 0;
+            int mSwitch = zero;
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -340,7 +384,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int length = productISBN10EditText.length();
                 if (mSwitch == 1) {
-                    if (length > 0) {
+                    if (length > zero) {
                         productISBN10EditText.removeTextChangedListener(this);
                         productISBN10EditText.setText(compileISBNNumber(productISBN10EditText.getText().toString().trim(), BookEntry.MAX_ISBN_10));
                         productISBN10EditText.setSelection(productISBN10EditText.getText().length());
@@ -357,7 +401,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
         productPriceEditText.addTextChangedListener(new TextWatcher() {
-            int mSwitch = 0;
+            int mSwitch = zero;
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -368,7 +412,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int length = productPriceEditText.length();
                 if (mSwitch == 1) {
-                    if (length == 0) {
+                    if (length == zero) {
                         productPriceEditText.removeTextChangedListener(this);
                         productPriceEditText.setText(createTextForPrice(zero));
                         productPriceEditText.setSelection(productPriceEditText.getText().length());
@@ -385,7 +429,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
         productQuantityEditText.addTextChangedListener(new TextWatcher() {
-            int mSwitch = 0;
+            int mSwitch = zero;
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -396,7 +440,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int length = productQuantityEditText.length();
                 if (mSwitch == 1) {
-                    if (length == 0) {
+                    if (length == zero) {
                         productQuantityEditText.removeTextChangedListener(this);
                         productQuantityEditText.setText(String.valueOf(zero));
                         productQuantityEditText.setSelection(productQuantityEditText.getText().length());

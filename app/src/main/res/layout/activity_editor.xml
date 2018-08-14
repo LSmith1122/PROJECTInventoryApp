@@ -6,29 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".EditorActivity">
 
-    <ScrollView
+    <Button
+        android:id="@+id/order_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/common_distance_large">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/normal_view_margin"
+        android:background="@color/colorAccent"
+        android:padding="@dimen/normal_view_margin"
+        android:text="@string/order"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/large_text_size"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:id="@+id/scroll_view_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/common_distance_large"
+        android:layout_below="@id/order_button">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/order_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/section_2"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/normal_view_margin"
-                android:background="@color/colorAccent"
-                android:padding="@dimen/normal_view_margin"
-                android:text="Order"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/normal_text_size"
-                android:textStyle="bold" />
-
+            <!-- Section 1-->
             <LinearLayout
                 android:id="@+id/section_1"
                 android:layout_width="wrap_content"
@@ -112,12 +114,14 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Section 2-->
             <LinearLayout
                 android:id="@+id/section_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/section_1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/large_view_margin">
 
                 <!-- Price View Group-->
                 <LinearLayout
@@ -224,9 +228,8 @@
                                 android:id="@+id/product_price_multiple_edit_text"
                                 style="@style/numerical_edit_text"
                                 android:layout_gravity="center_horizontal"
-                                android:digits="@string/allowed_characters_for_price_number"
                                 android:hint="@string/hint_product_price_multiple_edit_text"
-                                android:inputType="numberDecimal"
+                                android:inputType="number"
                                 android:textAlignment="center" />
                         </LinearLayout>
 
@@ -350,9 +353,8 @@
                                 android:id="@+id/product_quantity_multiple_edit_text"
                                 style="@style/numerical_edit_text"
                                 android:layout_gravity="center_horizontal"
-                                android:digits="@string/allowed_characters_for_price_number"
                                 android:hint="@string/hint_product_price_multiple_edit_text"
-                                android:inputType="numberDecimal"
+                                android:inputType="number"
                                 android:textAlignment="center" />
                         </LinearLayout>
 
@@ -365,7 +367,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/order_button"
+                android:layout_below="@+id/section_2"
                 android:layout_gravity="right"
                 android:layout_marginTop="@dimen/extra_large_view_margin"
                 android:orientation="vertical" />
@@ -376,6 +378,7 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/save_product_button"
         style="@style/basic_fab"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:src="@drawable/baseline_check_white_48" />
 
@@ -383,8 +386,11 @@
         android:id="@+id/cancel_button"
         style="@style/basic_fab"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:src="@drawable/outline_close_white_48" />
 </RelativeLayout>
+
+<!-- Code below is for the landscape layout -->
 
 
     <!--<?xml version="1.0" encoding="utf-8"?>--><!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:id="@+id/parent_view_group"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--tools:context=".EditorActivity">-->
