@@ -431,21 +431,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (currentString.length() > 6) {
                     phoneNumberString = beginning + currentString.substring(3, 6) + dash + currentString.substring(6);
                     if (currentString.length() > 10) {
-                        phoneNumberString = country + currentString.substring(0,1) + emptySpace
+                        phoneNumberString = country + currentString.substring(0, 1) + emptySpace
                                 + startAreaCode + currentString.substring(1, 4) + endAreaCode + emptySpace
-                                + currentString.substring(4,7)
+                                + currentString.substring(4, 7)
                                 + dash
                                 + currentString.substring(7);
                         if (currentString.length() > 11) {
-                            phoneNumberString = country + currentString.substring(0,2) + emptySpace
+                            phoneNumberString = country + currentString.substring(0, 2) + emptySpace
                                     + startAreaCode + currentString.substring(2, 5) + endAreaCode + emptySpace
-                                    + currentString.substring(5,8)
+                                    + currentString.substring(5, 8)
                                     + dash
                                     + currentString.substring(8);
                             if (currentString.length() > 12) {
-                                phoneNumberString = country + currentString.substring(0,3) + emptySpace
+                                phoneNumberString = country + currentString.substring(0, 3) + emptySpace
                                         + startAreaCode + currentString.substring(3, 6) + endAreaCode + emptySpace
-                                        + currentString.substring(6,9)
+                                        + currentString.substring(6, 9)
                                         + dash
                                         + currentString.substring(9);
                             }
@@ -602,11 +602,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         actualCVAmount = actualCVAmount + implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_SUPPLIER_PHONE_NUMBER, userProductSupplierPhone, true);
         actualCVAmount = actualCVAmount + implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_PRICE, userProductPrice, true);
         actualCVAmount = actualCVAmount + implementContentValues(userInputValues, BookEntry.COLUMN_PRODUCT_QUANTITY, userProductQuantity, true);
-        if (actualCVAmount >= maxCVAmount) {         // continue operation...
-            return true;
-        } else {            // halt operation and notify user to fill in all entries
-            return false;
-        }
+        return actualCVAmount >= maxCVAmount;
     }
 
     private int implementContentValues(ContentValues contentValues, String key, Object userInput, boolean required) {
@@ -672,7 +668,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void deleteProduct(Uri uri, String selection, String[] selectionArgs) {
-        int deletedRows = getContentResolver().delete(uri, selection, selectionArgs);
+        getContentResolver().delete(uri, selection, selectionArgs);
     }
 
     private void createToast(String toastText) {
@@ -682,6 +678,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onBackPressed() {
         if (!mHasBeenTouched) {              // if no changes were made, go back...
+            Log.i("TEST", "Nothing has been pressed...");
             super.onBackPressed();
             return;
         }

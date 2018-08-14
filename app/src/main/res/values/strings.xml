@@ -9,7 +9,7 @@
     <string name="hint_product_name">Product Name</string>
     <string name="product_quantity">x</string>
     <string name="hint_product_price">Price</string>
-    <string name="hint_product_quantity">0</string>
+    <string name="hint_product_quantity">Quantity</string>
     <string name="hint_product_author">Author</string>
     <string name="hint_product_isbn13">ISBN 13</string>
     <string name="hint_product_isbn10">ISBN 10</string>
@@ -22,7 +22,7 @@
     <string name="isbn_13">ISBN 13:</string>
     <string name="quantity_in_stock">left in stock</string>
     <string name="editor_add_description">Add Product to Inventory.</string>
-    <string name="editor_update_description" translatable="true">Insert new data below to edit the selected product\'s data.</string>
+    <string name="editor_update_description" translatable="true">Fill in the attributes below to edit the selected product\'s existing data.</string>
     <string name="hint_save_product_button">Add Product</string>
     <string name="menu_add_product">Add Product</string>
     <string name="menu_edit_product">Edit Product</string>
@@ -74,4 +74,7 @@
     <string name="price_monetary_symbol">$</string>
     <string name="invalid_uri_for_update">Invalid uri for update</string>
     <string name="invalid_uri_for_deletion">Invalid uri for deletion</string>
+    <string name="spacer_view_group_bottom">100dp</string>
+    <string name="hint_product_price_multiple_edit_text">10</string>
+    <string name="hint_product_price_multiple_text_view">Multiple of</string>
 </resources>

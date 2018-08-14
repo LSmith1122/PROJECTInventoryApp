@@ -19,4 +19,5 @@
     <dimen name="required_field_asterisk_minSize_width">8dp</dimen>
     <dimen name="max_text_length_isbn13">17</dimen>
     <dimen name="max_text_length_isbn10">13</dimen>
+    <dimen name="extra_large_view_margin">100dp</dimen>
 </resources>
