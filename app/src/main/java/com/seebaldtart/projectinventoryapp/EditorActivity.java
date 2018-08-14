@@ -218,7 +218,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private void updateUI(Cursor cursor) {
         if (cursor.getCount() > zero) {
             try {
-                cursor.moveToNext();
+                cursor.moveToLast();
                 int nameColumnIndex = cursor.getColumnIndexOrThrow(BookEntry.COLUMN_PRODUCT_NAME);
                 int authorColumnIndex = cursor.getColumnIndexOrThrow(BookEntry.COLUMN_PRODUCT_AUTHOR);
                 int isbn13ColumnIndex = cursor.getColumnIndexOrThrow(BookEntry.COLUMN_PRODUCT_ISBN_13);
