@@ -277,11 +277,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         saveButton = findViewById(R.id.save_product_button);
         cancelButton = findViewById(R.id.cancel_button);
         orderButton = findViewById(R.id.order_button);
-        final int initMultiple = 10;
         multiplePriceEditText = findViewById(R.id.product_price_multiple_edit_text);
         multipleQuantityEditText = findViewById(R.id.product_quantity_multiple_edit_text);
-        multipleQuantityEditText.setText(String.valueOf(initMultiple));
-        multiplePriceEditText.setText(String.valueOf(initMultiple));
+        multipleQuantityEditText.setText(String.valueOf(minMultiple));
+        multiplePriceEditText.setText(String.valueOf(minMultiple));
         setupViewOnClickListeners();
     }
 
